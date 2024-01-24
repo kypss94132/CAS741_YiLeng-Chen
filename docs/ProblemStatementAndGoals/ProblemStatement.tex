@@ -3,14 +3,15 @@
 \usepackage{tabularx}
 \usepackage{booktabs}
 
-\title{Problem Statement and Goals\\\progname}
+\title{Problem Statement and Goals \\
+Predict remaining life of concrete based on weather data\\\progname}
 
-\author{\authname}
+\author{Yi-Leng Chen}
 
-\date{}
+\date{January 23, 2024}
 
-\input{../Comments}
-\input{../Common}
+%\input{../Comments}
+%\input{../Common}
 
 \begin{document}
 
@@ -22,35 +23,40 @@
 \toprule
 \textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
 \midrule
-Date1 & Name(s) & Description of changes\\
-Date2 & Name(s) & Description of changes\\
-... & ... & ...\\
+January 23 & Yi-Leng Chen & Initial documentation\\
+%... & ... & ...\\
 \bottomrule
 \end{tabularx}
 \end{table}
 
 \section{Problem Statement}
 
-\wss{You should check your problem statement with the
-\href{https://github.com/smiths/capTemplate/blob/main/docs/Checklists/ProbState-Checklist.pdf}
-{problem statement checklist}.}
-\wss{You can change the section headings, as long as you include the required information.}
-
 \subsection{Problem}
+As buildings age, concerns about potential structural integrity and safety hazards naturally intensify. A prominent example is the risk of tiles or other construction materials detaching. In 1992, a laboratory in the United States emphasized the importance of predicting the remaining life of concrete structures. Having an estimate of the remaining service life enables property owners to proactively plan for repair or demolition actions before a tragedy occurs. Therefore, they published an article introducing various theories on how to extrapolate the remaining life of concrete. Based on this knowledge, this project aims to develop a program that implements the theories presented in the article, with the goal of predicting the remaining service life of concrete structures.
 
 \subsection{Inputs and Outputs}
 
-\wss{Characterize the problem in terms of ``high level'' inputs and outputs.  
-Use abstraction so that you can avoid details.}
-
+\begin{itemize}
+    \item Input: The Canadian government provides open data on historical weather, including Date, Humidity, and other relevant information. This data can be used to fit into the equation.
+    \item Output: The program will generate predictions for the remaining service life of the concrete.
+\end{itemize}
 \subsection{Stakeholders}
-
+\begin{itemize}
+This program is designed for anyone concerned about the safety of their building. Regardless of whether one is a property owner or resident, this program offers the capability to forecast the remaining service life of concrete, facilitating informed decision-making regarding necessary interventions. Additionally, climate or building experts may explore other factors that could lead to a significant increase or steady state in corrosion rates.
+\end{itemize}
 \subsection{Environment}
-
-\wss{Hardware and software}
+The program can operate on either a Windows system or MacOS.
 
 \section{Goals}
+This project aims to develop a program that implements the theories presented in the article, with the specific goal of predicting the remaining service life of concrete. The program will utilize weather data, particularly humidity and rainfall, to calculate the corrosion rate of the concrete. The outcome will automatically determine the conditions that match, providing an approximate estimate for the remaining service life of the concrete.
 
 \section{Stretch Goals}
+\begin{itemize}
+    \item Stakeholder Reminder: In accordance with local laws and regulations, the program can include a function to automatically notify authorities or property owners for inspections of buildings identified with potential risks and concrete that needs replacement.
 
+    \item Ensuring Cutting-edge Capabilities: The program should undergo regular updates to seamlessly integrate the most recent theoretical insights into its functionalities.
+
+    \itme User Interface Optimization: While the program is compatible with multiple operating systems, improving the user interface is crucial. A user-friendly design is essential to ensure that individuals without a computer background can easily interpret and act upon the program's predictions and recommendations.
+    
+\end{itemize}
 \end{document}
