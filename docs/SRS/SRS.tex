@@ -146,8 +146,7 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-February 2 & 1.0 & Initial Documentation\\
-February 5 & 1.1 & Modify chapter 4 to last chapter\\
+February 5 & 1.0 & Initial Documentation\\
 \bottomrule
 \end{tabularx}
 
@@ -190,15 +189,15 @@ systems.  The symbols are listed in alphabetical order.
 \noindent \begin{longtable*}{l l p{12cm}} \toprule
 \textbf{symbol} & \textbf{unit} & \textbf{description}\\
 \midrule 
+$A_\text{cr}$ & \si[per-mode=symbol]{{}\micro\ampere\per\centi\meter\squared}& Average corrosion rate of a year \\
 $A_d$ & \si[per-mode=symbol] {\milli\meter} & Accumulated deterioration at time $t_y$ \\
 $A_\text{df}$ & \si[per-mode=symbol] {\milli\meter} & Amount of damage at failure \\
 $C_1$ & - & Coefficient weighing the impact of corrosion rates (Icorr) in $M_1$\\
 $C_2$ & - & Coefficient weighing the impact of corrosion rates (Icorr) in $M_2$\\
 $C_3$ & - & Coefficient weighing the impact of corrosion rates (Icorr) in $M_3$\\
 
-$A_\text{cr}$ & \si[per-mode=symbol]{{}\micro\ampere\per\centi\meter\squared}& Average corrosion rate of a year \\
-
 $H_r$ & \% & Relative humidity\\
+$I__\text{corr}$ & - & Corrosion Rates (Icorr)\\
 
 $k_d$ & \si[per-mode=symbol]{{}\milli\meter\per\text{year}} & Factors influencing deterioration at time $t_y$ \\
 
@@ -208,13 +207,12 @@ $M_3$ & \SI{}{\text{month}} & Number of months that rain occurs\\
 
 $n$ & year & Time order \\
 
-$R_d$ & - & Corrosion Rates (Icorr)\\
 $R_d$ & \si[per-mode=symbol]{{}\meter\per\second} & Rate of concrete degradation \\
 
 $t_i$ & year & Age of the concrete at the time of condition inspection\\
 $t_r$ & year & Remaining service life of concrete\\
 $t_y$ & year & Service life of concrete\\
-$t_\text{yf}$ & year & Time to failure\\
+$t_f$ & year & Time to failure\\
 
 \\ 
 \bottomrule
@@ -368,22 +366,77 @@ general definition [GD], data definition [DD], instance model [IM], or likely ch
 \begin{itemize}
 
 A1: The values of $k_d$ remain constant throughout the entire deterioration period. \\
-A2: The only factor influencing the remaining life of concrete and causing degradation is listed in Table 1. \\
+A2: The factors influencing the remaining life of concrete and causing degradation are restricted to the following: carbonation, diffusion of chloride ions, acid attack (siliceous aggregate), acid attack (carbonate aggregate), sulfate attack, frost attack, active corrosion of steel and reinforcement (propagation). \\
 A3: Disregard self-conditions of concrete, such as cover thickness. \\
 A4: Unless specifically mentioned, consider multiple degradation processes occurring simultaneously, making the time order n=1. \\
 A5: If only one degradation process occurs, implicitly refer to Table 1 to determine the exact value of n.\\
 A6: All information obtained from inspections is accurate. \\
 A7: Relative humidity is the only factor that influences Icorr. \\
-A8: Distribute based on M1 , M2 and M3 three periods. \\
-A9: The relative humidity value needs to remain consistently below 70\% for a month to be considered in the calculation of the M1 value. The same applies to the M2 and M3 values. \\
-A10: The relationship between M1 and M2 is mutually exclusive to M3. In other words, there is no rain during the M1 and M2 periods.
+A8: Distribute based on $M_1$ , $M_2$ and $M_3$ three periods. \\
+A9: The relative humidity value needs to remain consistently below 70\% for a month to be considered in the calculation of the M1 value. The same applies to the $M_2$ and $M_3$ values. \\
+A10: The relationship between M1 and $M_2$ is mutually exclusive to $M_3$. In other words, there is no rain during the $M_1$ and $M_2$ periods.
 
 \end{itemize}
 
 \subsubsection{Theoretical Models}\label{sec_theoretical}
 
-There are no theoretical models.
+This section focuses on the general equations and laws that this program is based on.
 ~\newline
+
+\noindent
+\begin{minipage}{\textwidth}
+\renewcommand*{\arraystretch}{1.5}
+\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+  \hline
+  \rowcolor[gray]{0.9}
+  Number& TM\refstepcounter{instnum}\theinstnum \label{ewat}\\
+  \hline
+  Label& \bf Remaining service life\\
+  \hline
+  Equation & $t_r$=$t_f$-$t_i$ \\
+  \hline
+  Description & $t_{yf}$ is time to failure. \\
+              & $t_i$ is the age of the concrete at the time of condition inspection. \\
+              & $t_r$ is the remaining service life of the concrete. \\
+  & The above equation calculate the remaining service life.\\
+  \hline
+  Sources& - \\
+  \hline
+  Ref.\ By & -\\
+  \hline
+\end{tabular}
+\end{minipage}\\
+
+\noindent
+\begin{minipage}{\textwidth}
+\renewcommand*{\arraystretch}{1.5}
+\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+  \hline
+  \rowcolor[gray]{0.9}
+  Number& TM\refstepcounter{instnum}\theinstnum \label{ewat}\\
+  \hline
+  Label& \bf Average corrosion rate of a year\\
+ \hline
+  Equation & 
+\begin{equation*}
+A_{cr} = \frac{C_1 \cdot M_1 + C_2 \cdot M_2 + C_3 \cdot M_3}{12}
+\end{equation*} \\
+\hline
+Description &
+$C_1$ is Coefficient weighing the impact of corrosion rates (Icorr) in $M_1$. 
+$C_2$ is Coefficient weighing the impact of corrosion rates (Icorr) in $M_2$. 
+$C_3$ is Coefficient weighing the impact of corrosion rates (Icorr) in $M_3$.  
+$M_1$ is Number of months that relative humidity is below 70\%.  
+$M_2$ is Number of months that relative humidity is between 70 and 100\%.  
+$M_3$ is Number of months that rain occurs.  
+The above equation calculates average corrosion rate of a year.  \\
+\hline
+  Sources& - \\
+  \hline
+  Ref.\ By & -\\
+  \hline
+\end{tabular}
+\end{minipage}\\
 
 \subsubsection{General Definitions}\label{sec_gendef}
 
@@ -416,7 +469,7 @@ M represents the weather data for 12 months. Specifically, M1 denotes the number
 \hline
   Sources& Methods for Predicting Remaining Life of Concrete in Structures \\
   \hline
-  Ref.\ By & \iref{ewat}\\
+  Ref.\ By & TM2\\
   \hline
 \end{tabular}
 \end{minipage}\\
@@ -450,7 +503,7 @@ The coefficient for $M_1$ will be 0.1, for $M_2$ it will be 1.0, and for $M_3$ i
 \hline
   Sources& Methods for Predicting Remaining Life of Concrete in Structures \\
   \hline
-  Ref.\ By & \iref{ewat}\\
+  Ref.\ By & TM2\\
   \hline
 \end{tabular}
 \end{minipage}\\
@@ -472,7 +525,7 @@ identified in Sections~\ref{sec_theoretical} and~\ref{sec_gendef}.
 \begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
   \hline
   \rowcolor[gray]{0.9}
-  Number& IM\refstepcounter{instnum}\theinstnum \label{ewat}\\
+  Number& IM1\\
   \hline
   Label& \bf Amount of concrete degradation\\
   \hline
@@ -490,7 +543,7 @@ identified in Sections~\ref{sec_theoretical} and~\ref{sec_gendef}.
   \hline
   Sources& - \\
   \hline
-  Ref.\ By & \iref{epcm}\\
+  Ref.\ By & TM1\\
   \hline
 \end{tabular}
 \end{minipage}\\
@@ -502,7 +555,7 @@ identified in Sections~\ref{sec_theoretical} and~\ref{sec_gendef}.
 \begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
   \hline
   \rowcolor[gray]{0.9}
-  Number& IM\refstepcounter{instnum}\theinstnum \label{ewat}\\
+  Number& IM2\\
   \hline
   Label& \bf Rate of concrete degradation\\
   \hline
@@ -520,7 +573,7 @@ identified in Sections~\ref{sec_theoretical} and~\ref{sec_gendef}.
   \hline
   Sources& - \\
   \hline
-  Ref.\ By & \iref{epcm}\\
+  Ref.\ By & TM1\\
   \hline
 \end{tabular}
 \end{minipage}\\
@@ -532,7 +585,7 @@ identified in Sections~\ref{sec_theoretical} and~\ref{sec_gendef}.
 \begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
   \hline
   \rowcolor[gray]{0.9}
-  Number& IM\refstepcounter{instnum}\theinstnum \label{ewat}\\
+  Number& IM3\\
   \hline
   Label& \bf Calculate the time to get failure\\
   \hline
@@ -549,38 +602,11 @@ identified in Sections~\ref{sec_theoretical} and~\ref{sec_gendef}.
   \hline
   Sources& - \\
   \hline
-  Ref.\ By & \iref{epcm}\\
+  Ref.\ By & TM1\\
   \hline
 \end{tabular}
 \end{minipage}\\
 ~\newline
-
-\noindent
-\begin{minipage}{\textwidth}
-\renewcommand*{\arraystretch}{1.5}
-\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
-  \hline
-  \rowcolor[gray]{0.9}
-  Number& IM\refstepcounter{instnum}\theinstnum \label{ewat}\\
-  \hline
-  Label& \bf Remaining service life\\
-  \hline
-Input & $t_{yf}$, $t_i$ \\
-  \hline
-  Output & $t_r$ \\
-  \hline
-  Description & $t_{yf}$ is time to failure. \\
-              & $t_i$ is the age of the concrete at the time of condition inspection. \\
-              & $t_r$ is the remaining service life of the concrete. \\
-  \hline
-  & The above equation calculate the remaining service life.\\
-  \hline
-  Sources& - \\
-  \hline
-  Ref.\ By & \iref{epcm}\\
-  \hline
-\end{tabular}
-\end{minipage}\\
 
 \subsubsection{Input Data Constraints} \label{sec_DataConstraints}    
 
@@ -686,19 +712,57 @@ qualities that the software is expected to exhibit.
 
 \section{Traceability Matrices and Graphs}
 
-The purpose of the traceability matrices is to provide easy references on what
-has to be additionally modified if a certain component is changed.  Every time a
-component is changed, the items in the column of that component that are marked
-with an ``X'' may have to be modified as well.  Table~\ref{Table:trace} shows the
-dependencies of theoretical models, general definitions, data definitions, and
-instance models with each other. Table~\ref{Table:R_trace} shows the
-dependencies of instance models, requirements, and data constraints on each
-other. Table~\ref{Table:A_trace} shows the dependencies of theoretical models,
-general definitions, data definitions, instance models, and likely changes on
-the assumptions.
+The purpose of the traceability matrices is to provide easy references on what has to be additionally modified if a certain component is changed.  Every time a component is changed, the items in the column of that component that are marked with an ``X'' may have to be modified as well.  Table~\ref{Table:trace} shows the dependencies of theoretical models, general definitions, data definitions, and instance models with each other. Table~\ref{Table:R_trace} shows the dependencies of instance models, requirements, and data constraints on each other. Table~\ref{Table:A_trace} shows the dependencies of theoretical models, general definitions, data definitions, instance models, and likely changes on the assumptions.
 
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline        
+    & TM1 & TM2 & DD1 & DD2 & IM1 & IM2 & IM3 \\
+\hline
+TM1 & & & & & & & \\ \hline
+TM2 & & & & & & & \\ \hline
+DD1 & & X & & & & & \\ \hline
+DD2 & & X & & & & & \\ \hline
+IM1 & & & & & & & \\ \hline
+IM2 & & & & & & & \\ \hline
+IM3 & & & & & & & \\ \hline
+\hline
+\end{tabular}
+\caption{Traceability Matrix Showing the Connections Between Items of Different Sections}
+\label{Table:trace}
+\end{table}
+\section{Values of Auxiliary Constants}
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{cccc}
+    \hline        
+    Symbol & Description & Value & Unit  \\
+    \hline
+    $A_d$ & Accumulated deterioration at time $t_y$ & 24 & mm \\
+    $t_y$ & Time to failure  & 36 & years \\
+    n & Time order  & 1 & - \\
+    $k_d$ & Factors influencing deterioration  & 4 & mm/years \\
+    $t_f$ & Time to failure & 144 & years \\
+    \end{tabular}
+    \caption{Caption}
+    \label{tab:my_label}
+\end{table}
 
+\newpage
 
-\newpage{}
+\begin{thebibliography}{9} % Use a number that's larger than the number of references
+\bibitem{glassbr_spec}
+Nikitha Krithnan and W. Spencer Smith. \textit{Software Requirements Specification for GlassBR.}
+\url{https://jacquescarette.github.io/Drasil/examples/glassbr/SRS/srs/GlassBR_SRS.html}
+
+\bibitem{glassbr_spec}
+\textit{Historical Data.} (n.d.). Government of Canada. \url{https://climate.weather.gc.ca/historical_data/search_historic_data_e.html}
+
+\bibitem{glassbr_spec}
+Clifton, J. R., & Pommersheim, J. M. (1992). \textit{Methods for Predicting Remaining Life of Concrete in Structures.}
+\url{https://nvlpubs.nist.gov/nistpubs/Legacy/IR/nistir4954.pdf}
+
+\end{thebibliography}
 
 \end{document}
