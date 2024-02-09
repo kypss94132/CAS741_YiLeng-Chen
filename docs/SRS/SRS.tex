@@ -24,7 +24,7 @@
 %\usepackage{refcheck}
 
 \hypersetup{
-    bookmarks=true,         % show bookmarks bar?
+    bookmarks=true,        % show bookmarks bar?
     colorlinks=true,       % false: boxed links; true: colored links
     linkcolor=red,          % color of internal links (change box color with linkbordercolor)
     citecolor=green,        % color of links to bibliography
@@ -133,7 +133,7 @@
 \date{February 5, 2024}
 	
 \maketitle
-~\newpage
+%~\newpage
 
 \pagenumbering{roman}
 
@@ -171,7 +171,8 @@ Throughout this document SI (Syst\`{e}me International d'Unit\'{e}s) is employed
     \si{\second} & time & second\\
     \si{\celsius} & temperature & centigrade\\
     \si{\ampere} & electric current & ampere\\
-    \si{\micro} & micro & \(10^{-6}\) \\
+    \si{\pascal} & pressure & pascal\\
+    \si{\micro} & micro & $10^-6$ \\
     \bottomrule
   \end{tabular}
   %	\caption{Provide a caption}
@@ -192,28 +193,43 @@ systems.  The symbols are listed in alphabetical order.
 $A_\text{cr}$ & \si[per-mode=symbol]{{}\micro\ampere\per\centi\meter\squared}& Average corrosion rate of a year \\
 $A_d$ & \si[per-mode=symbol] {\milli\meter} & Accumulated deterioration at time $t_y$ \\
 $A_\text{df}$ & \si[per-mode=symbol] {\milli\meter} & Amount of damage at failure \\
+
+$C(x,t)$ & \% & The chloride concentration at depth x after time t \\
+$C_o$ & \% & Constant chloride concentration at the surface\\
+$C_R$ & cm & Thickness of concrete cover\\
 $C_1$ & - & Coefficient weighing the impact of corrosion rates (Icorr) in $M_1$\\
 $C_2$ & - & Coefficient weighing the impact of corrosion rates (Icorr) in $M_2$\\
 $C_3$ & - & Coefficient weighing the impact of corrosion rates (Icorr) in $M_3$\\
 
+$D_\text{cl}$ & - & Chloride ion diffusion coefficient\\
+$erf$ & - & error function\\
+
 $H_r$ & \% & Relative humidity\\
-$I__\text{corr}$ & - & Corrosion Rates (Icorr)\\
+$I__\text{corr}$ & - & Corrosion Rates (\Icorr)\\
 
+$k_a$ & - & Coefficient of active corrosion \\
+$k_c$ & - & Quality coefficient of concrete \\
 $k_d$ & \si[per-mode=symbol]{{}\milli\meter\per\text{year}} & Factors influencing deterioration at time $t_y$ \\
+$k_e$ & - & Coefficient of environment \\
 
+$L$ & cm & The remaining uncarbonated cover \\
 $M_1$ & \SI{}{\text{month}} & Number of months that relative humidity is below 70\%\\
 $M_2$ & \SI{}{\text{month}} & Number of months that relative humidity is between 70 and 100\% \\
 $M_3$ & \SI{}{\text{month}} & Number of months that rain occurs\\
 
-$n$ & year & Time order \\
+$n$ & year & Time order\\
 
+$R_c$ & cm/year & rate of carbonation \\
 $R_d$ & \si[per-mode=symbol]{{}\meter\per\second} & Rate of concrete degradation \\
 
+$t$ & year & The time required to reach a sufficient depth x to obtain complete chloride concentration\\
+$t_c$ & year & The time to be fully covered by carbonation\\
 $t_i$ & year & Age of the concrete at the time of condition inspection\\
 $t_r$ & year & Remaining service life of concrete\\
 $t_y$ & year & Service life of concrete\\
 $t_f$ & year & Time to failure\\
 
+$x$ & m & Depth of chloride concentration \\
 \\ 
 \bottomrule
 \end{longtable*}
@@ -245,7 +261,7 @@ $t_f$ & year & Time to failure\\
 \pagenumbering{arabic}
 
 \section{Introduction}
-In response to the critical need for predicting the remaining life of concrete structures, this project aims to develop a program that implements theories introduced by a United States laboratory in 1992. Their work emphasized the importance of estimating remaining service life to enable property owners to plan for repairs or demolitions proactively. The program's goal is to predict the remaining service life of concrete structures, offering a valuable tool for effective maintenance and decision-making. \\
+In response to the critical need for predicting the remaining life of concrete structures, this project aims to develop a program that implements theories introduced by a United States laboratory in 1992. Their work emphasized the importance of estimating remaining service life to enable property owners to plan for repairs or demolitions proactively. By predicting the remaining service life of concrete structures, it offers a valuable tool for effective maintenance and decision-making. \\
 \\
 The upcoming section will present a roadmap for the Software Requirements Specification (SRS) of the program. This segment elucidates the document's purpose, outlines the scope of the requirements, and describes the characteristics of the target audience for this document.
 
@@ -254,27 +270,27 @@ The upcoming section will present a roadmap for the Software Requirements Specif
 The primary aim of this document is to outline the requirements of the Concrete Remaining Life Prediction program. This encompasses background information, goals, assumptions, theoretical models, definitions, and other details related to model derivation. These components collectively enable the audience to gain a clear understanding and verify the purpose and scientific basis of this program.
 
 \subsection{Scope of Requirements} 
-This document explores the impact of climate data and the level of concrete deterioration on concrete structures, with the aim of implementing a predictive program.
+This document explores the impact of climate data and the level of concrete deterioration (e.g., carbonation model) on concrete structures, aiming to implement a predictive program.
 
 \subsection{Characteristics of Intended Reader} \label{sec_IntendedReader}
-The intended Reviewers of this documentation should possess an understanding of meteorology or building environments. Additionally, a basic grasp of high-school level mathematics and chemistry is recommended. For users of the prediction program can have a lower level of expertise, as further explained in the ``User Characteristics'' section (Section~\ref{SecUserCharacteristics}).
+The intended reviewers of this documentation should possess an understanding of meteorology or civil engineering. Additionally, a basic grasp of high-school level mathematics and chemistry is recommended. For users of the prediction program can have a lower level of expertise, as further explained in the ``User Characteristics'' section (Section~\ref{SecUserCharacteristics}).
 
 \subsection{Organization of Document}
 
-The organization of this document follows the SRS template provided by Dr. Smith and the GlassBR SRS document.
+The organization of this document follows the SRS template provided by Dr. Smith and the GlassBR SRS document\cite{glassbr_spec}.
 
 \section{General System Description}
 
 This section provides general information about the system.  It identifies the interfaces between the system and its environment, describes the user characteristics and lists the system constraints.  
 
 \subsection{System Context}
-Figure 1 illustrates the system context. In this representation, a circle signifies an external entity, which, in this case, is the user. The rectangle represents the prediction program, and arrows depict the data flow between the system and its environment.
+{Figure \ref{fig:syscon}} illustrates the system context. In this representation, a circle signifies an external entity, which, in this case, is the user. The rectangle represents the prediction program, and arrows depict the data flow between the system and its environment.
 
 \begin{figure}
     \centering
     \includegraphics[width=0.9\linewidth]{System Context.JPG}
     \caption{System Context}
-    \label{fig:enter-label}
+    \label{fig:syscon}
 \end{figure}
 
 The interaction between the product and the user is through a UI. The responsibilities of the user and the system are as follows: 
@@ -338,7 +354,7 @@ This subsection provides a list of terms that are used in the subsequent section
         \item Reinforcement (propagation)
     \end{itemize}
 
-    \item Rain: Precipitation in the form of liquid water droplets greater than 0.5 mm. If widely scattered, the drop size may be smaller.
+    \item Rain: Precipitation in the form of liquid water droplets greater than 0.5 mm. 
 
     \item Relative Humidity: Relative humidity in percent (\%) is the ratio of the quantity of water vapour the air contains compared to the maximum amount it can hold at that particular temperature. 
 \end{enumerate}
@@ -365,78 +381,32 @@ general definition [GD], data definition [DD], instance model [IM], or likely ch
 
 \begin{itemize}
 
-A1: The values of $k_d$ remain constant throughout the entire deterioration period. \\
-A2: The factors influencing the remaining life of concrete and causing degradation are restricted to the following: carbonation, diffusion of chloride ions, acid attack (siliceous aggregate), acid attack (carbonate aggregate), sulfate attack, frost attack, active corrosion of steel and reinforcement (propagation). \\
-A3: Disregard self-conditions of concrete, such as cover thickness. \\
-A4: Unless specifically mentioned, consider multiple degradation processes occurring simultaneously, making the time order n=1. \\
-A5: If only one degradation process occurs, implicitly refer to Table 1 to determine the exact value of n.\\
-A6: All information obtained from inspections is accurate. \\
-A7: Relative humidity is the only factor that influences Icorr. \\
-A8: Distribute based on $M_1$ , $M_2$ and $M_3$ three periods. \\
-A9: The relative humidity value needs to remain consistently below 70\% for a month to be considered in the calculation of the M1 value. The same applies to the $M_2$ and $M_3$ values. \\
-A10: The relationship between M1 and $M_2$ is mutually exclusive to $M_3$. In other words, there is no rain during the $M_1$ and $M_2$ periods.
+\item[A\refstepcounter{assumpnum}\theassumpnum \label{kdconstant}:]
+  The values of $k_d$ remain constant throughout the entire deterioration period.
+
+\item[A\refstepcounter{assumpnum}\theassumpnum \label{factors}:]
+  The factors influencing the remaining life of concrete and causing degradation are restricted to the following: carbonation, diffusion of chloride ions, acid attack (siliceous aggregate), acid attack (carbonate aggregate), sulfate attack, frost attack, active corrosion of steel and reinforcement (propagation).
+
+\item[A\refstepcounter{assumpnum}\theassumpnum \label{kd}:]
+    If only one degradation process occurs, implicitly refer to \hyperref[tab:factors]{Figure \ref{tab:factors}} to determine the exact value of n; Multiple degradation processes occurring simultaneously, making the time order n=1.
+
+\item[A\refstepcounter{assumpnum}\theassumpnum 
+\label{Rh}:]
+When using weather data to predict results, relative humidity is considered the only factor that influences Icorr.
+
+\item[A\refstepcounter{assumpnum}\theassumpnum 
+\label{Months}:]
+The relative humidity value needs to remain consistently below 70\% for a month to be considered in the calculation of the $M_1$ value. The same applies to the $M_2$ and $M_3$ values. 
+
+\item[A\refstepcounter{assumpnum}\theassumpnum 
+\label{Relationship}:]
+The relationship between $M_1$ and $M_2$ is mutually exclusive to $M_3$. In other words, there is no rain during the $M_1$ and $M_2$ periods.
 
 \end{itemize}
 
 \subsubsection{Theoretical Models}\label{sec_theoretical}
 
-This section focuses on the general equations and laws that this program is based on.
-~\newline
-
-\noindent
-\begin{minipage}{\textwidth}
-\renewcommand*{\arraystretch}{1.5}
-\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
-  \hline
-  \rowcolor[gray]{0.9}
-  Number& TM\refstepcounter{instnum}\theinstnum \label{ewat}\\
-  \hline
-  Label& \bf Remaining service life\\
-  \hline
-  Equation & $t_r$=$t_f$-$t_i$ \\
-  \hline
-  Description & $t_{yf}$ is time to failure. \\
-              & $t_i$ is the age of the concrete at the time of condition inspection. \\
-              & $t_r$ is the remaining service life of the concrete. \\
-  & The above equation calculate the remaining service life.\\
-  \hline
-  Sources& - \\
-  \hline
-  Ref.\ By & -\\
-  \hline
-\end{tabular}
-\end{minipage}\\
-
-\noindent
-\begin{minipage}{\textwidth}
-\renewcommand*{\arraystretch}{1.5}
-\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
-  \hline
-  \rowcolor[gray]{0.9}
-  Number& TM\refstepcounter{instnum}\theinstnum \label{ewat}\\
-  \hline
-  Label& \bf Average corrosion rate of a year\\
- \hline
-  Equation & 
-\begin{equation*}
-A_{cr} = \frac{C_1 \cdot M_1 + C_2 \cdot M_2 + C_3 \cdot M_3}{12}
-\end{equation*} \\
-\hline
-Description &
-$C_1$ is Coefficient weighing the impact of corrosion rates (Icorr) in $M_1$. 
-$C_2$ is Coefficient weighing the impact of corrosion rates (Icorr) in $M_2$. 
-$C_3$ is Coefficient weighing the impact of corrosion rates (Icorr) in $M_3$.  
-$M_1$ is Number of months that relative humidity is below 70\%.  
-$M_2$ is Number of months that relative humidity is between 70 and 100\%.  
-$M_3$ is Number of months that rain occurs.  
-The above equation calculates average corrosion rate of a year.  \\
-\hline
-  Sources& - \\
-  \hline
-  Ref.\ By & -\\
-  \hline
-\end{tabular}
-\end{minipage}\\
+There are no theoretical models.
 
 \subsubsection{General Definitions}\label{sec_gendef}
 
@@ -449,41 +419,11 @@ This section collects and defines all the data needed to build the instance mode
 
 \noindent
 \begin{minipage}{\textwidth}
-
 \renewcommand*{\arraystretch}{1.5}
 \begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
 \hline
 \rowcolor[gray]{0.9}
-Number& DD\refstepcounter{datadefnum}\thedatadefnum \label{FluxCoil}\\
-\hline
-Label& \bf Month data\\
-\hline
-Symbol & M\\
-\hline
-SI Units & months\\
-\hline
-Equation & $M=M_1+M_2+M_3$\\
-\hline
-Description & 
-M represents the weather data for 12 months. Specifically, M1 denotes the number of months with relative humidity below 70\%, M2 indicates the number of months with relative humidity between 70 and 100\%, and M3 represents the number of months with rainfall.\\
-\hline
-  Sources& Methods for Predicting Remaining Life of Concrete in Structures \\
-  \hline
-  Ref.\ By & TM2\\
-  \hline
-\end{tabular}
-\end{minipage}\\
-
-~\newline
-
-\noindent
-\begin{minipage}{\textwidth}
-
-\renewcommand*{\arraystretch}{1.5}
-\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
-\hline
-\rowcolor[gray]{0.9}
-Number& DD\refstepcounter{datadefnum}\thedatadefnum \label{FluxCoil}\\
+Number& DD\refstepcounter{datadefnum}\thedatadefnum \label{MC}\\
 \hline
 Label & Coefficient weighing the impact of corrosion rates (Icorr) in $M$ \\
 \hline
@@ -501,12 +441,109 @@ Equation &
 Description & 
 The coefficient for $M_1$ will be 0.1, for $M_2$ it will be 1.0, and for $M_3$ it will be 10.\\
 \hline
-  Sources& Methods for Predicting Remaining Life of Concrete in Structures \\
+  Sources& James Clifton et al.~\cite{glassbr_spec} \\
   \hline
-  Ref.\ By & TM2\\
+  Ref.\ By & \iref{ewat}\\
   \hline
 \end{tabular}
 \end{minipage}\\
+
+\noindent
+\begin{minipage}{\textwidth}
+\renewcommand*{\arraystretch}{1.5}
+\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+\hline
+\rowcolor[gray]{0.9}
+Number& DD\refstepcounter{datadefnum}\thedatadefnum \label{Acr}\\
+\hline
+Label & Average corrosion rate of year\\
+\hline
+Symbol & $A_\text{cr}$ \\
+\hline
+SI Units & - \\
+\hline
+Equation & \(A_\text{cr} = \frac{C_1 \cdot M_1 + C_2 \cdot M_2 + C_3 \cdot M_3}{12}\) \\
+\hline
+Description 
+& $M_1$ is month Number of months that relative humidity is below 70\%  \\
+& $M_2$ is month Number of months that relative humidity is between 70 and 100\% \\
+& $M_3$ is month Number of months that rain occurs\\
+& $C_1$ is coefficient weighing the impact of corrosion rates (Icorr) in $M_1$\\
+& $C_2$ is coefficient weighing the impact of corrosion rates (Icorr) in $M_2$ \\
+& $C_1$ is coefficient weighing the impact of corrosion rates (Icorr) in $M_3$\\
+\hline
+  Sources& James Clifton et al.~\cite{glassbr_spec} \\
+  \hline
+  Ref.\ By & \iref{ewat}\\
+  \hline
+\end{tabular}
+\end{minipage}\\
+~\newline
+%---------------------------------------------------------
+\noindent
+\begin{minipage}{\textwidth}
+\renewcommand*{\arraystretch}{1.5}
+\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+\hline
+\rowcolor[gray]{0.9}
+Number& DD\refstepcounter{datadefnum}\thedatadefnum \label{kd}\\
+\hline
+Label & Amount of concrete degradation\\
+\hline
+Symbol & $k_d$, $A_d$, $t_y$, n \\
+\hline
+SI Units & - \\
+\hline
+Equation & 
+\(k_d = \left(\frac{A_d}{t_y}\right)^n\) \\
+\hline
+Description & 
+  $A_d$ is Accumulated deterioration at time $t_y$. \\
+  &$k_d$ is Factors influencing deterioration. \\
+  &$t_y$ is Service life of concrete. \\
+  & n is time order \\
+  & The above equation calculate the amount of concrete degradation.\\
+\hline
+  Sources& James Clifton et al.~\cite{glassbr_spec} \\
+  \hline
+  Ref.\ By & \iref{ewat}\\
+  \hline
+\end{tabular}
+\end{minipage}\\
+~\newline
+%---------------------------------------------------------
+\noindent
+\begin{minipage}{\textwidth}
+\renewcommand*{\arraystretch}{1.5}
+\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+\hline
+\rowcolor[gray]{0.9}
+Number& DD\refstepcounter{datadefnum}\thedatadefnum \label{ty}\\
+\hline
+  Label& \bf Time to failure\\
+  \hline
+Symbol & $t_y$, $A_\text{df}$, $k_d$ , n \\
+\hline
+SI Units & - \\
+\hline
+Equation & 
+$t_y$ = \left(\frac{{A_d_f}}{k_d}\right)^{\frac{1}{n}}) \\
+\hline
+Description & 
+  \(t_y\) is Service life of concrete \\
+  & \(A_d\) is the amount of damage at failure \\
+  & \(k_d\) is the factor influencing deterioration \\
+  & \(n\) is the time order \\
+  & The above equation calculates the time to failure \\
+\hline
+  Sources& James Clifton et al.~\cite{glassbr_spec} \\
+  \hline
+  Ref.\ By & \iref{ewat}\\
+  \hline
+\end{tabular}
+\end{minipage}\\
+~\newline
+
 
 \subsubsection{Instance Models} \label{sec_instance}    
 
@@ -525,29 +562,34 @@ identified in Sections~\ref{sec_theoretical} and~\ref{sec_gendef}.
 \begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
   \hline
   \rowcolor[gray]{0.9}
-  Number& IM1\\
+  Number& IM\refstepcounter{instnum}\theinstnum \\
+  \label{cxy}\\ % Move \label command to a separate line
   \hline
-  Label& \bf Amount of concrete degradation\\
+  Label& \bf By using chloride concentration at depth x to derive time t\\
   \hline
-  Input& $k_d$, $t_y$, n\\
+  Input&$C_o$, erf, x, $D_\text{cl}, t$\\
   \hline
-  Output& $A_d$\\
- %\iref{epcm} \\
+  Output& C(x,t)\\
   \hline
-  Description 
-  &$A_d$ is Accumulated deterioration at time $t_y$. \\
-  &$k_d$ is Factors influencing deterioration. \\
-  &$t_y$ is Service life of concrete. \\
-  & n is time order \\
-  & The above equation calculate the amount of concrete degradation.\\
+  Description&
+  $C_o$ is constant chloride concentration at the surface.\\
+  &erf is the error function.\\
+  &x is the depth of chloride concentration.\\
+  &$D_\text{cl}$ is Chloride ion diffusion coefficient.\\
+  &t is the time required to reach a sufficient depth x to obtain complete chloride concentration.\\
+  & The above equation the time t to reach depth x can be used to derive the remaining service life.
+  \\
   \hline
-  Sources& - \\
+  Sources& James Clifton et al.~\cite{glassbr_spec} \\
   \hline
-  Ref.\ By & TM1\\
+  Ref.\ By & -\\
   \hline
 \end{tabular}
 \end{minipage}\\
 ~\newline
+
+
+%Instance Model 2
 
 \noindent
 \begin{minipage}{\textwidth}
@@ -555,29 +597,31 @@ identified in Sections~\ref{sec_theoretical} and~\ref{sec_gendef}.
 \begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
   \hline
   \rowcolor[gray]{0.9}
-  Number& IM2\\
+  Number& IM\refstepcounter{instnum}\theinstnum \label{tc}\\
   \hline
-  Label& \bf Rate of concrete degradation\\
+  Label& \bf Predict remaining service life of carbonation model\\
   \hline
-  Input& n, $k_d$, $t_y$, n-1\\
+  Input& L, x, $R_c$\\
   \hline
-  Output& $R_d$\\
- %\iref{epcm} \\
+  Output & $t_c$\\
   \hline
-  Description 
-  &$R_d$ is rate of degradation. \\
-  &$k_d$ is factors influencing deterioration. \\
-  &$t_y$ is service life of concrete. \\
-  & n is time order \\
-  & The above equation calculate the rate of degradation.\\
+  Description&
+  $t_c$ is the time to be fully covered by carbonation.\\
+  &L is the the remaining uncarbonated cover.\\
+  &$D_\text{cl}$ is Chloride ion diffusion coefficient.\\
+  &$R_c$ is the rate of carbonation.\\
+  & The above equation predict remaining service life of carbonation model.
+  \\
   \hline
-  Sources& - \\
+  Sources& James Clifton et al.~\cite{glassbr_spec} \\
   \hline
-  Ref.\ By & TM1\\
+  Ref.\ By & -\\
   \hline
 \end{tabular}
 \end{minipage}\\
 ~\newline
+
+%Instance Model 3
 
 \noindent
 \begin{minipage}{\textwidth}
@@ -585,85 +629,98 @@ identified in Sections~\ref{sec_theoretical} and~\ref{sec_gendef}.
 \begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
   \hline
   \rowcolor[gray]{0.9}
-  Number& IM3\\
+  Number& IM\refstepcounter{instnum}\theinstnum \label{t2}\\
   \hline
-  Label& \bf Calculate the time to get failure\\
+  Label& \bf Prediction of remaining service life with respect to chloride attack\\
   \hline
-  Input & $A_{df}$, $k_d$, $1/n$ \\
+  Input& $k_c$, $k_e$, CR, $k_a$ \\
   \hline
-  Output & $t_{yf}$ \\
+  Output & $t_r$\\
   \hline
-  Description & $A_{df}$ is the amount of damage at failure. \\
-              & $k_d$ is the factor influencing deterioration. \\
-              & $t_{yf}$ is the time to failure. \\
+  Description&
+  $t_r$ is the remaining service life of concrete.\\
+  &$k_c$ is the quality coefficient of concrete.\\
+  &$k_e$ is the coefficient of environment.\\
+  &CR is the thickness of concrete cove.\\
+  &$k_a$ is the coefficient of active corrosion.\\
+  & The above equation prediction of remaining service life with respect to chloride attack.
+  \\
   \hline
-  & n is time order \\
-  & The above equation calculate the time to get failure.\\
+  Sources& James Clifton et al.~\cite{glassbr_spec} \\
   \hline
-  Sources& - \\
-  \hline
-  Ref.\ By & TM1\\
+  Ref.\ By & -\\
   \hline
 \end{tabular}
 \end{minipage}\\
 ~\newline
 
+%Instance Model 4
+
+\noindent
+\begin{minipage}{\textwidth}
+\renewcommand*{\arraystretch}{1.5}
+\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+  \hline
+  \rowcolor[gray]{0.9}
+  Number & IM\refstepcounter{instnum}\theinstnum \\
+  \label{weather}\\ % Move \label command to a separate line
+  \hline
+  Label & \bf Prediction of remaining service life with weather data \\
+  \hline
+  Input & $A_\text{cr}$ \\ % Add a closing $ here
+  \hline
+  Output & $t_r$ \\
+  \hline
+  Description &
+  $t_r$ is the remaining service life of concrete. \\
+  & $A_{\text{cr}}$ is the average corrosion rate of a year. \\
+  & The above equation predicts the remaining service life with weather data. \\
+  \hline
+  Sources & James Clifton et al.~\cite{glassbr_spec} \\
+  \hline
+  Ref.\ By & - \\
+  \hline
+\end{tabular}
+\end{minipage}\\
+~\newline
+
+
+%Instance Model 5
+
+\noindent
+\begin{minipage}{\textwidth}
+\renewcommand*{\arraystretch}{1.5}
+\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
+  \hline
+  \rowcolor[gray]{0.9}
+  Number& IM\refstepcounter{instnum}\theinstnum \label{tyf}\\
+  \hline
+  Label& \bf Predict the remaining service life based on the age at failure up to the time of inspection\\
+  \hline
+  Input& $t_f$, $t_i$ \\
+  \hline
+  Output & $t_r$\\
+  \hline
+  Description&
+  $t_r$ is the remaining service life of concrete.\\
+  &$t_f$ is the average corrosion rate of a year.\\
+  &$t_i$ is the age of the concrete at the time of condition inspection.\\
+  & The above equation predict the remaining service life based on the age at failure up to the time of inspection.\\
+  \hline
+  Sources& James Clifton et al.~\cite{glassbr_spec} \\
+  \hline
+  Ref.\ By & -\\
+  \hline
+\end{tabular}
+\end{minipage}\\
+~\newline
 \subsubsection{Input Data Constraints} \label{sec_DataConstraints}    
 
-Table~\ref{TblInputVar} shows the data constraints on the input output
-variables.  The column for physical constraints gives the physical limitations
-on the range of values that can be taken by the variable.  The column for
-software constraints restricts the range of inputs to reasonable values.  The
-software constraints will be helpful in the design stage for picking suitable
-algorithms.  The constraints are conservative, to give the user of the model the
-flexibility to experiment with unusual situations.  The column of typical values
-is intended to provide a feel for a common scenario.  The uncertainty column
-provides an estimate of the confidence with which the physical quantities can be
-measured.  This information would be part of the input if one were performing an
-uncertainty quantification exercise.
-
-\begin{table}[!h]
-  \caption{Input Variables} \label{TblInputVar}
-  \renewcommand{\arraystretch}{1.2}
-\noindent \begin{longtable*}{l l l l c} 
-  \toprule
-  \textbf{Var} & \textbf{Physical Constraints} & \textbf{Software Constraints} &
-                             \textbf{Typical Value} & \textbf{Uncertainty}\\
-  \midrule 
-  $t_y$ & $t_y \ge 0$ & $-$ & 1 year & 10\% \\
-  $n$ & $n \ge 0$ & $-$ & 1 & 10\% \\
-  $A_{df}$ & $A_{df} \ge 0$ & $-$ & 10mm & 10\%
-  $M_1$ & $12 \ge M_1 \ge 0$ & $-$ & 4months & 10\% \\
-  $M_2$ & $12 \ge M_1 \ge 0$ & $-$ & 4months & 10\% \\
-  $M_3$ & $12 \ge M_1 \ge 0$ & $-$ & 4months & 10\% \\
-  \\
-  \bottomrule
-\end{longtable*}
-\end{table}
+There are no constraints regarding input variables or specification parameter values.
 
 \subsubsection{Properties of a Correct Solution} \label{sec_CorrectSolution}
 
-\noindent
-A correct solution must exhibit \plt{fill in the details}.  \plt{These
-  properties are in addition to the stated requirements.  There is no need to
-  repeat the requirements here.  These additional properties may not exist for
-  every problem.  Examples include conservation laws (like conservation of
-  energy or mass) and known constraints on outputs, which are usually summarized
-  in tabular form.  A sample table is shown in Table~\ref{TblOutputVar}}
-
-\begin{table}[!h]
-\caption{Output Variables} \label{TblOutputVar}
-\renewcommand{\arraystretch}{1.2}
-\noindent \begin{longtable*}{l l} 
-  \toprule
-  \textbf{Var} & \textbf{Physical Constraints} \\
-  \midrule 
-  $A_d$ & $A_d \ge 0$\\
-  $R_d$ & $R_d \ge 0$\\
-  \\
-  \bottomrule
-\end{longtable*}
-\end{table}
+There are no constraints regarding output variables.
 
 \section{Requirements}
 
@@ -677,92 +734,142 @@ qualities that the software is expected to exhibit.
 
 \item[R\refstepcounter{reqnum}\thereqnum \label{R_Inputs}:] Input the weather data and concrete degradation data.
 
-\item[R\refstepcounter{reqnum}\thereqnum \label{R_OutputInputs}:] Utilize the input from the previous step to calculate the average corrosion rate and time to failure for the concrete.
+\item[R\refstepcounter{reqnum}\thereqnum \label{R_Output}:] Output the prediction result.
 
-\item[R\refstepcounter{reqnum}\thereqnum \label{R_Calculate}:] Generated prediction result.
+\item[R\refstepcounter{reqnum}\thereqnum \label{R_Calculate}:] Utilize the input from the previous step to calculate the average corrosion rate and time to failure for the concrete.
 
+\item[R\refstepcounter{reqnum}\thereqnum \label{R_VerifyOutput}:]Verify that the output result is generated from the input data.
 \end{itemize}
 
 \subsection{Nonfunctional Requirements}
 
 \noindent \begin{itemize}
 
+\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR_Usability}:]
+  \textbf{Usability} With the UI, users are able to input data and generate output effortlessly.
+
 \item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR_Accuracy}:]
   \textbf{Accuracy} With the given input, the system is capable of generating accurate results.
 
-\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR_Verifiable}:] \textbf{Reusable} The code is modularized.
-
+\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR_Reusable}:] \textbf{Reusable} The code is modularized and flexible to extend functions.
 \end{itemize}
 
 \section{Likely Changes}    
 
-\noindent \begin{itemize}
+\noindent 
+\begin{itemize}
 
-\item[LC\refstepcounter{lcnum}\thelcnum\label{LC_meaningfulLabel}:] IM1 is the likely to changes.
+\item[LC\refstepcounter{lcnum}\thelcnum\label{LC_meaningfulLabel}:] The \hyperref[kdconstant]{Assumption \ref*{kdconstant}} restricts the category of degradations that might be experienced in the future.
 
+\item[LC\refstepcounter{lcnum}\thelcnum\label{LC_meaningfulLabe2}:] The \hyperref[weather]{Assumption \ref*{weather}} restricts the weather factor to only be \(R_h\) that might be experienced in the future.
 \end{itemize}
-
 \section{Unlikely Changes}    
 
 \noindent \begin{itemize}
 
-\item[LC\refstepcounter{lcnum}\thelcnum\label{LC_meaningfulLabel}:] IM4 is fixed and unlikely to change.
+\item[UL\refstepcounter{lcnum}\thelcnum\label{UL_meaningfulLabel}:] The \hyperref[Months]{Assumption \ref*{Months}} is fixed and unlikely to change.
 
 \end{itemize}
 
 \section{Traceability Matrices and Graphs}
 
-The purpose of the traceability matrices is to provide easy references on what has to be additionally modified if a certain component is changed.  Every time a component is changed, the items in the column of that component that are marked with an ``X'' may have to be modified as well.  Table~\ref{Table:trace} shows the dependencies of theoretical models, general definitions, data definitions, and instance models with each other. Table~\ref{Table:R_trace} shows the dependencies of instance models, requirements, and data constraints on each other. Table~\ref{Table:A_trace} shows the dependencies of theoretical models, general definitions, data definitions, instance models, and likely changes on the assumptions.
+The purpose of the traceability matrices is to provide easy references on what has to be additionally modified if a certain component is changed.  Every time a component is changed, the items in the column of that component that are marked with an ``X'' may have to be modified as well. Table~\ref{Table:trace} shows the dependencies of theoretical models, general definitions, data definitions, and instance models with each other. Table~\ref{Table:R_trace} shows the dependencies of instance models, requirements, and data constraints on each other. Table~\ref{Table:A_trace} shows the dependencies of theoretical models, general definitions, data definitions, instance models, and likely changes on the assumptions.
 
 \begin{table}[htbp]
 \centering
-\begin{tabular}{|c|c|c|c|c|c|c|c|}
-\hline        
-    & TM1 & TM2 & DD1 & DD2 & IM1 & IM2 & IM3 \\
+\begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-TM1 & & & & & & & \\ \hline
-TM2 & & & & & & & \\ \hline
-DD1 & & X & & & & & \\ \hline
-DD2 & & X & & & & & \\ \hline
-IM1 & & & & & & & \\ \hline
-IM2 & & & & & & & \\ \hline
-IM3 & & & & & & & \\ \hline
+ & A1 & A2 &  A3& A4 & A5 & A6 \\
 \hline
+DD1 &  &  &  &  &  &  \\ \hline
+DD2 &  &  &  & X & X & X \\ \hline
+DD3 & X & X &  &  &  &  \\ \hline
+DD4 &  &  &  &  &  &  \\ \hline
+IM1 &  &  &  &  &  &  \\ \hline
+IM2 &  &  &  &  &  &  \\ \hline
+IM3 &  &  &  &  &  &  \\ \hline
+IM4&  &  &  & X & X & X \\ \hline
+IM5 &  &  &  &  &  &  \\ \hline
+LC1 &  &  &  &  &  &  \\ \hline
+LC2 &  &  &  &  &  &  \\ \hline
+UL1 &  &  &  &  &  &  \\ \hline
 \end{tabular}
-\caption{Traceability Matrix Showing the Connections Between Items of Different Sections}
-\label{Table:trace}
+\caption{Traceability Matrix Showing the Connections Between Assumptions and Other Items}
+\label{Table:A_trace}
 \end{table}
-\section{Values of Auxiliary Constants}
-\begin{table}[htbp]
-    \centering
-    \begin{tabular}{cccc}
-    \hline        
-    Symbol & Description & Value & Unit  \\
-    \hline
-    $A_d$ & Accumulated deterioration at time $t_y$ & 24 & mm \\
-    $t_y$ & Time to failure  & 36 & years \\
-    n & Time order  & 1 & - \\
-    $k_d$ & Factors influencing deterioration  & 4 & mm/years \\
-    $t_f$ & Time to failure & 144 & years \\
-    \end{tabular}
-    \caption{Caption}
-    \label{tab:my_label}
-\end{table}
-
 \newpage
 
-\begin{thebibliography}{9} % Use a number that's larger than the number of references
-\bibitem{glassbr_spec}
-Nikitha Krithnan and W. Spencer Smith. \textit{Software Requirements Specification for GlassBR.}
-\url{https://jacquescarette.github.io/Drasil/examples/glassbr/SRS/srs/GlassBR_SRS.html}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+ & DD1 & DD2& DD3 & DD4 & IM1 & IM2 & IM3& IM4 & IM5 & LC1& LC2 & UC1\\
+\hline
+DD1 &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
+DD2 &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
+DD3 &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
+DD4 &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
+IM1 &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
+IM2 &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
+IM3 &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
+IM4 & X &  &  &  &  &  &  &  &  &  &  &   \\ \hline
+IM5 &  &  &  &  &  &  &  &  &  &  &  &   \\ \hline
+LC1 &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
+LC2 &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
+UC1&  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
+\end{tabular}
+\caption{Your table caption}
+\label{tab:your_table}
+\end{table}
+\newpage
 
-\bibitem{glassbr_spec}
-\textit{Historical Data.} (n.d.). Government of Canada. \url{https://climate.weather.gc.ca/historical_data/search_historic_data_e.html}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+ & IM1 & IM2 & IM3& IM4 & IM5 & R1 & R2 &R3 &R4 \\ \hline
+IM1 &  &  &  &  &  &  &  &  \\ \hline
+IM2 &  &  &  &  &  &  &  &  \\ \hline
+IM3 &  &  &  &  &  &  &  &  \\ \hline
+IM4 &  &  &  &  &  &  &  &  \\ \hline
+IM5 &  &  &  &  &  &  &  &  \\ \hline
+R1 &  &  &  &  &  &  &  &  \\ \hline
+R2 &  &  &  &  &  &  &  &  \\ \hline
+R3 &  &  &  &  &  &  &  &  \\ \hline
+R4 &  &  &  &  &  &  &  &  \\ \hline
+\end{tabular}
+\caption{Traceability Matrix Showing the Connections Between Requirements and Instance Models}
+\label{Table:R_trace}
+\end{table}
+\newpage
 
-\bibitem{glassbr_spec}
-Clifton, J. R., & Pommersheim, J. M. (1992). \textit{Methods for Predicting Remaining Life of Concrete in Structures.}
-\url{https://nvlpubs.nist.gov/nistpubs/Legacy/IR/nistir4954.pdf}
-
+\begin{thebibliography}{9} 
+    \bibitem{glassbr_spec}
+    Nikitha Krithnan and W. Spencer Smith. \textit{Software Requirements Specification forGlassBR.}    \url{https://jacquescarette.github.io/Drasil/examples/glassbr/SRS/srs/GlassBR_SRS.html}
+    
+    \bibitem{historical_data}
+    \textit{Historical Data.} (n.d.). Government of Canada. \url{https://climate.weather.gc.ca/historical_data/search_historic_data_e.html}
+    
+    \bibitem{concrete_life}
+    Clifton, J. R., \& Pommersheim, J. M. (1992). \textit{Methods for Predicting Remaining Life of Concrete in Structures.}
+    \url{https://nvlpubs.nist.gov/nistpubs/Legacy/IR/nistir4954.pdf}
 \end{thebibliography}
+
+\newpage
+\paragraph{Appendix}
+\begin{table}[htbp]
+    \begin{tabular}{cc}
+        Degradation Process & Value of n\\
+        carbonation & 1/2\\
+        diffusion of chloride ions & 1/2\\
+        acid attack (siliceous aggregate) & 1/2\\
+        acid attack (carbonate aggregate) & 1\\
+        sulfate attack & 1\\
+        frost attack & 1\\
+        active corrosion of steel reinforcement (propagation) & 1\\
+    \end{tabular}
+    \caption{Values of n Obtained from Models}
+    \label{tab:factors}
+\end{table}
 
 \end{document}
