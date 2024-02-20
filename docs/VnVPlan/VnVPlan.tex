@@ -1,7 +1,10 @@
 \documentclass[12pt, titlepage]{article}
-
+\usepackage{array} 
 \usepackage{booktabs}
+\usepackage{adjustbox}
 \usepackage{tabularx}
+\newcounter{rowcount}
+\setcounter{rowcount}{0}
 \usepackage{hyperref}
 \hypersetup{
     colorlinks,
@@ -12,14 +15,14 @@
 }
 \usepackage[round]{natbib}
 
-\input{../Comments}
-\input{../Common}
+%\input{../Comments}
+%\input{../Common}
 
 \begin{document}
 
-\title{Project Title: System Verification and Validation Plan for \progname{}} 
-\author{\authname}
-\date{\today}
+\title{Project Title: System Verification and Validation Plan for Concrete Remaining Life Prediction} 
+\author{Yi-Leng Chen}
+\date{February 19, 2024}
 	
 \maketitle
 
@@ -30,459 +33,440 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-Date 1 & 1.0 & Notes\\
-Date 2 & 1.1 & Notes\\
+February 19 & 1.0 & Initial Documentation\\
+
 \bottomrule
 \end{tabularx}
-
-~\\
-\wss{The intention of the VnV plan is to increase confidence in the software.
-However, this does not mean listing every verification and validation technique
-that has ever been devised.  The VnV plan should also be a \textbf{feasible}
-plan. Execution of the plan should be possible with the time and team available.
-If the full plan cannot be completed during the time available, it can either be
-modified to ``fake it'', or a better solution is to add a section describing
-what work has been completed and what work is still planned for the future.}
-
-\wss{The VnV plan is typically started after the requirements stage, but before
-the design stage.  This means that the sections related to unit testing cannot
-initially be completed.  The sections will be filled in after the design stage
-is complete.  the final version of the VnV plan should have all sections filled
-in.}
 
 \newpage
 
 \tableofcontents
 
 \listoftables
-\wss{Remove this section if it isn't needed}
-
-\listoffigures
-\wss{Remove this section if it isn't needed}
 
 \newpage
 
 \section{Symbols, Abbreviations, and Acronyms}
+
+Table \ref{tab:symbols} lists the symbols, abbreviations, and acronyms used in this document. For other symbols used in this project, they are organized in the first section of the SRS document \cite{srs}.
+\newline
 
 \renewcommand{\arraystretch}{1.2}
 \begin{tabular}{l l} 
   \toprule		
   \textbf{symbol} & \textbf{description}\\
   \midrule 
-  T & Test\\
+  CI & Continuous Integration \\
+  CRLP & Concrete Remaining Life Prediction program \\
+  MIS & Module Interface Specification \\
+  MG & Module Guide \\
+  VnV & Verification \& Validation \\
+  UI & User Interface\\
   \bottomrule
 \end{tabular}\\
-
-\wss{symbols, abbreviations, or acronyms --- you can simply reference the SRS
-  \citep{SRS} tables, if appropriate}
-
-\wss{Remove this section if it isn't needed}
+\label{tab:symbols}
 
 \newpage
 
 \pagenumbering{arabic}
 
-This document ... \wss{provide an introductory blurb and roadmap of the
-  Verification and Validation plan}
+This document provides an overview of the Verification and Validation (VnV) process for the Concrete Remaining Life Prediction program (CRLP), ensuring adherence to the program's specifications outlined in the SRS document \cite{srs}. It begins with general information about CRLP in section \ref{sec:plan}. The subsequent sections will discuss the verification plan and the process of system tests.
 
 \section{General Information}
 
 \subsection{Summary}
 
-\wss{Say what software is being tested.  Give its name and a brief overview of
-  its general functions.}
+This document reviews the VnV process for the CRLP program. By inputting weather data or the condition of the concrete, CRLP can predict the remaining service life of concrete structures, thereby helping to prevent hazards to buildings.
 
 \subsection{Objectives}
 
-\wss{State what is intended to be accomplished.  The objective will be around
-  the qualities that are most important for your project.  You might have
-  something like: ``build confidence in the software correctness,''
-  ``demonstrate adequate usability.'' etc.  You won't list all of the qualities,
-  just those that are most important.}
-
-\wss{You should also list the objectives that are out of scope.  You don't have 
-the resources to do everything, so what will you be leaving out.  For instance, 
-if you are not going to verify the quality of usability, state this.  It is also 
-worthwhile to justify why the objectives are left out.}
-
-\wss{The objectives are important because they highlight that you are aware of 
-limitations in your resources for verification and validation.  You can't do everything, 
-so what are you going to prioritize?  As an example, if your system depends on an 
-external library, you can explicitly state that you will assume that external library 
-has already been verified by its implementation team.}
+The objectives of CRLP will primarily focus on accuracy and usability. In other words, the priority of this program is to ensure that the output is correct and that users can operate the program effortlessly. The program will utilize certain Python external libraries, which we assume to be functioning correctly in this case.
 
 \subsection{Relevant Documentation}
 
-\wss{Reference relevant documentation.  This will definitely include your SRS
-  and your other project documents (design documents, like MG, MIS, etc).  You
-  can include these even before they are written, since by the time the project
-  is done, they will be written.}
+The relevant documentation for CRLP comprises the Problem Statement, which delineates the proposed idea; the System Requirements Specifications, which furnish information about the requirements of the proposed system; the VnV Report, dedicated to validation and verification; and the MG and MIS design documents.
 
-\citet{SRS}
+\section{Plan}\label{sec:plan}
 
-\wss{Don't just list the other documents.  You should explain why they are relevant and 
-how they relate to your VnV efforts.}
+The following section outlines the testing plan for CRLP. It begins with addressing the verification and validation team in section \ref{sec:vnvteam}. Subsequently, these sections discuss various plans, such as the SRS verification plan, design verification plan, and implementation verification plan. Section \ref{sec:autoTnV} describes automated testing and verification. Finally, section \ref{sec:softwarevp} mentions the Software validation plan.
 
-\section{Plan}
+\subsection{Verification and Validation Team} \label{sec:vnvteam}
 
-\wss{Introduce this section.   You can provide a roadmap of the sections to
-  come.}
-
-\subsection{Verification and Validation Team}
-
-\wss{Your teammates.  Maybe your supervisor.
-  You should do more than list names.  You should say what each person's role is
-  for the project's verification.  A table is a good way to summarize this information.}
+\begin{table}
+    \centering
+    \begin{tabular}{|c|p{13cm}|} 
+    \hline
+        Name & Responsibility  \\
+    \hline
+        Dr.Spencer Smith & As the instructor of the team, the role is to supervise and provide professional assistance to the author.\\
+    \hline
+        Yi-Leng Chen & As the author of the team, responsibilities include composing documents, implementing the program, and testing it.\\
+    \hline
+        Atiyeh Sayadi & As the Domain Expert of the team, responsibilities include reviewing all documents related to the project.  \\
+    \hline
+        Waqar Awan & As the Secondary Reviewer of the team, responsibilities include reviewing the VnV plan.\\
+    \hline
+        Kim Ying Wong & As the Secondary Reviewer of the team, responsibilities include reviewing MG and MIS documents. \\
+    \hline
+    \end{tabular}
+    \caption{Verification and Validation Team}
+    \label{tab:VnVTeam}
+\end{table}
 
 \subsection{SRS Verification Plan}
-
-\wss{List any approaches you intend to use for SRS verification.  This may include
-  ad hoc feedback from reviewers, like your classmates, or you may plan for 
-  something more rigorous/systematic.}
-
-\wss{Maybe create an SRS checklist?}
-
-\subsection{Design Verification Plan}
-
-\wss{Plans for design verification}
-
-\wss{The review will include reviews by your classmates}
-
-\wss{Create a checklists?}
-
-\subsection{Verification and Validation Plan Verification Plan}
-
-\wss{The verification and validation plan is an artifact that should also be
-verified.  Techniques for this include review and mutation testing.}
-
-\wss{The review will include reviews by your classmates}
-
-\wss{Create a checklists?}
-
-\subsection{Implementation Verification Plan}
-
-\wss{You should at least point to the tests listed in this document and the unit
-  testing plan.}
-
-\wss{In this section you would also give any details of any plans for static
-  verification of the implementation.  Potential techniques include code
-  walkthroughs, code inspection, static analyzers, etc.}
-
-\subsection{Automated Testing and Verification Tools}
-
-\wss{What tools are you using for automated testing.  Likely a unit testing
-  framework and maybe a profiling tool, like ValGrind.  Other possible tools
-  include a static analyzer, make, continuous integration tools, test coverage
-  tools, etc.  Explain your plans for summarizing code coverage metrics.
-  Linters are another important class of tools.  For the programming language
-  you select, you should look at the available linters.  There may also be tools
-  that verify that coding standards have been respected, like flake9 for
-  Python.}
-
-\wss{If you have already done this in the development plan, you can point to
-that document.}
-
-\wss{The details of this section will likely evolve as you get closer to the
-  implementation.}
-
-\subsection{Software Validation Plan}
-
-\wss{If there is any external data that can be used for validation, you should
-  point to it here.  If there are no plans for validation, you should state that
-  here.}
-
-\wss{You might want to use review sessions with the stakeholder to check that
-the requirements document captures the right requirements.  Maybe task based
-inspection?}
-
-\wss{For those capstone teams with an external supervisor, the Rev 0 demo should 
-be used as an opportunity to validate the requirements.  You should plan on 
-demonstrating your project to your supervisor shortly after the scheduled Rev 0 demo.  
-The feedback from your supervisor will be very useful for improving your project.}
-
-\wss{For teams without an external supervisor, user testing can serve the same purpose 
-as a Rev 0 demo for the supervisor.}
-
-\wss{This section might reference back to the SRS verification section.}
-
-\section{System Test Description}
-	
-\subsection{Tests for Functional Requirements}
-
-\wss{Subsets of the tests may be in related, so this section is divided into
-  different areas.  If there are no identifiable subsets for the tests, this
-  level of document structure can be removed.}
-
-\wss{Include a blurb here to explain why the subsections below
-  cover the requirements.  References to the SRS would be good here.}
-
-\subsubsection{Area of Testing1}
-
-\wss{It would be nice to have a blurb here to explain why the subsections below
-  cover the requirements.  References to the SRS would be good here.  If a section
-  covers tests for input constraints, you should reference the data constraints
-  table in the SRS.}
-		
-\paragraph{Title for Test}
-
+The SRS document can be verified by following these steps:
 \begin{enumerate}
-
-\item{test-id1\\}
-
-Control: Manual versus Automatic
-					
-Initial State: 
-					
-Input: 
-					
-Output: \wss{The expected result for the given inputs}
-
-Test Case Derivation: \wss{Justify the expected value given in the Output field}
-					
-How test will be performed: 
-					
-\item{test-id2\\}
-
-Control: Manual versus Automatic
-					
-Initial State: 
-					
-Input: 
-					
-Output: \wss{The expected result for the given inputs}
-
-Test Case Derivation: \wss{Justify the expected value given in the Output field}
-
-How test will be performed: 
-
-\end{enumerate}
-
-\subsubsection{Area of Testing2}
-
-...
-
-\subsection{Tests for Nonfunctional Requirements}
-
-\wss{The nonfunctional requirements for accuracy will likely just reference the
-  appropriate functional tests from above.  The test cases should mention
-  reporting the relative error for these tests.  Not all projects will
-  necessarily have nonfunctional requirements related to accuracy}
-
-\wss{Tests related to usability could include conducting a usability test and
-  survey.  The survey will be in the Appendix.}
-
-\wss{Static tests, review, inspections, and walkthroughs, will not follow the
-format for the tests given below.}
-
-\subsubsection{Area of Testing1}
-		
-\paragraph{Title for Test}
-
-\begin{enumerate}
-
-\item{test-id1\\}
-
-Type: Functional, Dynamic, Manual, Static etc.
-					
-Initial State: 
-					
-Input/Condition: 
-					
-Output/Result: 
-					
-How test will be performed: 
-					
-\item{test-id2\\}
-
-Type: Functional, Dynamic, Manual, Static etc.
-					
-Initial State: 
-					
-Input: 
-					
-Output: 
-					
-How test will be performed: 
-
-\end{enumerate}
-
-\subsubsection{Area of Testing2}
-
-...
-
-\subsection{Traceability Between Test Cases and Requirements}
-
-\wss{Provide a table that shows which test cases are supporting which
-  requirements.}
-
-\section{Unit Test Description}
-
-\wss{This section should not be filled in until after the MIS (detailed design
-  document) has been completed.}
-
-\wss{Reference your MIS (detailed design document) and explain your overall
-philosophy for test case selection.}  
-
-\wss{To save space and time, it may be an option to provide less detail in this section.  
-For the unit tests you can potentially layout your testing strategy here.  That is, you 
-can explain how tests will be selected for each module.  For instance, your test building 
-approach could be test cases for each access program, including one test for normal behaviour 
-and as many tests as needed for edge cases.  Rather than create the details of the input 
-and output here, you could point to the unit testing code.  For this to work, you code 
-needs to be well-documented, with meaningful names for all of the tests.}
-
-\subsection{Unit Testing Scope}
-
-\wss{What modules are outside of the scope.  If there are modules that are
-  developed by someone else, then you would say here if you aren't planning on
-  verifying them.  There may also be modules that are part of your software, but
-  have a lower priority for verification than others.  If this is the case,
-  explain your rationale for the ranking of module importance.}
-
-\subsection{Tests for Functional Requirements}
-
-\wss{Most of the verification will be through automated unit testing.  If
-  appropriate specific modules can be verified by a non-testing based
-  technique.  That can also be documented in this section.}
-
-\subsubsection{Module 1}
-
-\wss{Include a blurb here to explain why the subsections below cover the module.
-  References to the MIS would be good.  You will want tests from a black box
-  perspective and from a white box perspective.  Explain to the reader how the
-  tests were selected.}
-
-\begin{enumerate}
-
-\item{test-id1\\}
-
-Type: \wss{Functional, Dynamic, Manual, Automatic, Static etc. Most will
-  be automatic}
-					
-Initial State: 
-					
-Input: 
-					
-Output: \wss{The expected result for the given inputs}
-
-Test Case Derivation: \wss{Justify the expected value given in the Output field}
-
-How test will be performed: 
-					
-\item{test-id2\\}
-
-Type: \wss{Functional, Dynamic, Manual, Automatic, Static etc. Most will
-  be automatic}
-					
-Initial State: 
-					
-Input: 
-					
-Output: \wss{The expected result for the given inputs}
-
-Test Case Derivation: \wss{Justify the expected value given in the Output field}
-
-How test will be performed: 
-
-\item{...\\}
+    \item Documentation: The document should adhere to the SRS template \cite{srstem} and be uploaded to GitHub.
+    \item Review: The author create separate issues for the instructor, domain expert, and secondary reviewer (specifically designated for SRS). And these three individuals are responsible for using SRS checklist \cite{srscheck} to review the SRS document.
+    \item Modify: Make adjustments to the document based on the feedback received from the reviewers. Then, repeat the aforementioned steps.
     
 \end{enumerate}
 
-\subsubsection{Module 2}
+\subsection{Design Verification Plan}
+The design documents, such as the Module Guide (MG) and the Module Interface Specification (MIS), can be verified by following these steps:
+\begin{enumerate}
+    \item Documentation: Unlike previous documents, there are no templates for design documents. The MG should provide a high-level overview of the architecture and structure of the software system, while the MIS should provide interface details about the modules. These documents need to be uploaded to GitHub once they are finished.
+    \item Review: The author create separate issues for the instructor, domain expert, and secondary reviewer (specifically designated for specific review). And these three individuals are responsible for using checklist \cite{mgcheck} \cite{mischeck} to review the documents.
+    \item Modify: Make adjustments to the document based on the feedback received from the reviewers. Then, repeat the aforementioned steps.
+\end{enumerate}
 
-...
+\subsection{Verification and Validation Plan}
 
+The VnV plan can be verified by following these steps:
+
+\begin{enumerate}
+    \item Documentation: There is also no restricted format for the document, but there's a template \cite{vnvtem} that can be referred to, and the document needs to be uploaded to GitHub once it is finished.
+    \item Review: Once the VnV plan is done, the author create separate issues for the instructor, domain expert, and secondary reviewer (specifically designated for VnV). And these three individuals are responsible for using VnV checklist \cite{vnvcheck}to review the document.
+    \item Modify: Make adjustments to the document based on the feedback received from the reviewers. Then, repeat the aforementioned steps.
+\end{enumerate}
+
+\subsection{Implementation Verification Plan}
+
+This project will only conduct dynamic testing. The testing plans for functional and non-functional requirements are mentioned in section \ref{sec:systests}, while unit tests are listed in section \ref{sce:unittests}.
+
+\subsection{Automated Testing and Verification Tools} \label{sec:autoTnV}
+
+\begin{itemize}
+    \item Pytest: The test framework for Python, can execute test cases and provide test results.
+    \item GitHub Actions: A Continuous Integration (CI) tool which can automate the execution of tests whenever changes are pushed to a repository.
+\end{itemize}
+
+\subsection{Software Validation Plan} \label{sec:softwarevp}
+
+Due to the lack of an external supervisor for this project and time constraints, a software validation plan will not be conducted.
+
+\section{System Test Description} \label{sec:systests}
+	
+\subsection{Tests for Functional Requirements}
+In Section 5.1 of the SRS document \cite{srs}, four functional requirements were listed. R1 and R2 primarily emphasize the input and output functions. R3 involves testing the calculated function, while R4 verifies its results.
+
+\subsubsection{Input function test}
+The core of this project involves prediction using various theories, each of which has different equations. The test plans are designed based on these theories.
+
+\begin{itemize}
+    \item Chloride ions exposure: 
+    \label{item:browne}
+    R.D. Browne \cite{browne} forecast the remaining lifespan of reinforced concrete structures in service, which are exposed to chloride ions.
+
+    \item Carbonation model:
+    \label{item:hookham}
+    C.J. Hookham\cite{hookham} forecast the remaining service life using the carbonation model.
+
+    \item Predict with weather data:
+    \label{item:weather}
+     C. Andrade et al \cite{andrade} use humidity data from weather records to predict the remaining service life of concrete.
+
+    \item Predict time to failure:
+    \label{item:failure}
+    J.R. Clifton \cite{clifton} proposed an idea on how to forecast the time for concrete to degrade completely.
+\end{itemize}
+\newpage
+\begin{enumerate}
+    \item test-input-functions \\
+    Control: Automatic	\\				
+    Initial State: Uninitialized\\		
+    Input: Listed in Input column in the table \ref{tab:inputtest}.\\			
+    Output: Listed in Input column in the table \ref{tab:inputtest}.\\
+    Test Case Derivation: This case aims to test the different behaviors when inputting data.\\
+    How test will be performed: This test will be conducted through Pytest and GitHub Actions.\\
+
+\begin{table}
+    \centering
+    \begin{adjustbox}{width=\textwidth}
+    \begin{tabularx}{\textwidth}{c|c|c|c} % Use "X" for the last column to allow it to stretch to fill the remaining space
+    \hline
+        Case ID & Input & Output & Theory\\
+    %Input minimum value of data  
+    \hline
+         \stepcounter{rowcount} \therowcount & $t$=1 second& Success & Theory \ref{item:browne}\\
+    %Input minimum value of data     
+    \hline
+    \hline
+         \stepcounter{rowcount} \therowcount & $M_1, M_2, M_3=1$ month& Success & Theory \ref{item:weather}\\
+    \hline
+        \stepcounter{rowcount} \therowcount & Input random valid value of data & Success & All theories\\
+    \hline
+        \stepcounter{rowcount} \therowcount & Input nothing for input data & Error & All theories\\
+    \hline
+    \multicolumn{4}{p{\dimexpr\textwidth-2\tabcolsep\relax}}{*Success means CRLP loads the data successfully and moves on to the process step.} \\ 
+    \multicolumn{4}{p{\dimexpr\textwidth-2\tabcolsep\relax}}{*Error means rejecting input and popping error message: Please enter the value!} \\ 
+    \end{tabularx}
+    \end{adjustbox}
+    \caption{Input data test}
+    \label{tab:inputtest}
+\end{table}
+\end{enumerate}
+
+\newpage
+\subsubsection{Output function test}
+
+\begin{table}
+    \centering
+    \begin{adjustbox}{width=\textwidth}
+    \begin{tabularx}{\textwidth}{c|c|c|c} % Use "X" for the last column to allow it to stretch to fill the remaining space
+    \hline
+        Case ID & Input & Output & Theory\\
+    \hline
+        1 & Input random valid value of data & Success & All theories\\
+    \hline
+        2& Input nothing for input data & Nothing & All theories\\
+    \hline
+    \multicolumn{4}{p{\dimexpr\textwidth-2\tabcolsep\relax}}{*Success means CRLP output the predict result successfully.} \\ 
+    \end{tabularx}
+    \end{adjustbox}
+    \caption{Output data test}
+    \label{tab:outputtest}
+\end{table}
+
+\begin{enumerate}
+
+    \item test-output-functions \\
+    Control: Automatic	\\				
+    Initial State: Uninitialized\\		
+    Input: Listed in Input column in the table \ref{tab:outputtest}.\\			
+    Output: Listed in Input column in the table \ref{tab:outputtest}.\\
+    Test Case Derivation: This case aims to test the different behaviors after inputting data and conducting calculations.\\
+    How test will be performed: This test will be conducted through Pytest and GitHub Actions.\\
+					
+\end{enumerate}
+
+\subsubsection{Calculated function test}
+
+\begin{table}
+    \centering
+    \begin{adjustbox}{width=\textwidth}
+    \begin{tabularx}{\textwidth}{c|c|c|c} % Use "X" for the last column to allow it to stretch to fill the remaining space
+    \hline
+        Case ID & Input & Output & Theory\\
+    \hline
+        1 & Input random valid value of data & Success & All theories\\
+    \hline
+        2& Input nothing for input data & Nothing & All theories\\
+    \hline
+    \multicolumn{4}{p{\dimexpr\textwidth-2\tabcolsep\relax}}{*Success means CRLP starting to calculate result.} \\ 
+    \end{tabularx}
+    \end{adjustbox}
+    \caption{calculated data test}
+    \label{tab:caltest}
+\end{table}
+
+\begin{enumerate}
+
+    \item test-output-functions \\
+    Control: Automatic	\\				
+    Initial State: Uninitialized\\		
+    Input: Listed in Input column in the table \ref{tab:caltest}.\\			
+    Output: Listed in Input column in the table \ref{tab:caltest}.\\
+    Test Case Derivation: This case aims to test calculate process.\\
+    How test will be performed: This test will be conducted through Pytest and GitHub Actions.\\
+					
+\end{enumerate}
+
+\subsubsection{Result check test}
+
+\begin{table}
+    \centering
+    \begin{adjustbox}{width=\textwidth}
+    \begin{tabularx}{\textwidth}{c|c|c|c} % Use "X" for the last column to allow it to stretch to fill the remaining space
+    \hline
+        Case ID & Input & Output & Theory\\
+    \hline
+        1 & Input random valid value of data & Success & All theories\\
+    \hline
+    \multicolumn{4}{p{\dimexpr\textwidth-2\tabcolsep\relax}}{*Success is defined as the accurate calculation of results by CRLP.} \\ 
+    \end{tabularx}
+    \end{adjustbox}
+    \caption{result test}
+    \label{tab:resulttest}
+\end{table}
+
+\begin{enumerate}
+
+    \item test-output-functions \\
+    Control: Manual	\\				
+    Initial State: Uninitialized\\		
+    Input: Listed in Input column in the table \ref{tab:resulttest}.\\			
+    Output: Listed in Input column in the table \ref{tab:resulttest}.\\
+    Test Case Derivation: The objective of this case is to verify the accuracy and conformity of the calculated results with the specified equations.\\
+    How test will be performed: This test will involve comparing the calculated results with manually calculated values.\\
+					
+\end{enumerate}
 \subsection{Tests for Nonfunctional Requirements}
 
-\wss{If there is a module that needs to be independently assessed for
-  performance, those test cases can go here.  In some projects, planning for
-  nonfunctional tests of units will not be that relevant.}
+In Section 5.2 of the SRS document \cite{srs}, three functional requirements were listed.
 
-\wss{These tests may involve collecting performance data from previously
-  mentioned functional tests.}
-
-\subsubsection{Module ?}
+\subsubsection{Nonfunctional Requirements Test}
 		
+\paragraph{Usability Test}
+
+\begin{enumerate}
+
+\item Test Usability \\
+Type: Manual \\
+Initial State: None \\
+Input/Condition: Survey for users \\
+Output/Result: The survey result from users \\
+How test will be performed: Administering the survey (based on appendix section) to users. Following practical usage of the system's UI, sending the survey to users to gather feedback from them.
+
+\item{test-accuracy\\}
+
+    Control: Manual	\\				
+    Initial State: Uninitialized\\		
+    Input: Listed in Input column in the table \ref{tab:resulttest}.\\			
+    Output: Listed in Input column in the table \ref{tab:resulttest}.\\
+    Test Case Derivation: The objective of this case is to verify the accuracy and conformity of the calculated results with the specified equations.\\
+    How test will be performed: This test will involve comparing the calculated results with manually calculated values.\\
+
+\item{test-reusable\\}
+
+    Control: Manual	\\				
+    Initial State: Uninitialized\\		
+    Input: elements in each equations.\\			
+    Output: generate different predict result\\
+    Test Case Derivation: The objective of this case is to ensure that this program can flexibly extend its functions.\\
+    How test will be performed: This test will change some coefficients of the current equation to prove that the program can maintain a state-of-the-art view.\\
+\end{enumerate}
+
+\subsection{Traceability Between Test Cases and Requirements}
+
+\begin{table}
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|c|}
+    \hline 
+         & R1 & R2 & R3 & R4 & NFR1 & NFR2 & NFR3\\
+    \hline 
+        4.1.1 & X &  &  &  &  &  &\\
+    \hline 
+        4.1.2 &  & X &  &  &  &  &\\
+    \hline 
+        4.1.3 &  &  & X &  &  &  &\\
+    \hline 
+        4.1.4 &  &  &  & X &  &  &\\
+    \hline 
+        4.2.1 &  &  &  &  & X &  &\\
+    \hline 
+        4.2.2 &  &  &  &  &  & X &\\
+    \hline 
+        4.2.3 &  &  &  &  &  &  & X\\
+    \hline 
+    \end{tabular}
+    \caption{Traceability between test Cases and requirements}
+    \label{tab:reference table}
+\end{table}
+
+\newpage
+\section{Unit Test Description} \label{sce:unittests}
+
+\subsection{Unit Testing Scope}
+This section will not be completed until after the MIS and MG are finished.
+
+\subsection{Tests for Functional Requirements}
+This section will not be completed until after the MIS and MG are finished.
+
+\subsubsection{Module 1}
+The following content will not be completed until after the MIS and MG are finished.
+
 \begin{enumerate}
 
 \item{test-id1\\}
 
-Type: \wss{Functional, Dynamic, Manual, Automatic, Static etc. Most will
-  be automatic}
-					
-Initial State: 
-					
-Input/Condition: 
-					
-Output/Result: 
-					
-How test will be performed: 
-					
-\item{test-id2\\}
-
-Type: Functional, Dynamic, Manual, Static etc.
-					
-Initial State: 
-					
-Input: 
-					
-Output: 
-					
-How test will be performed: 
-
+Type: TBD \\
+Initial State: TBD	\\			
+Input: TBD	\\			
+Output: TBD \\
+Test Case Derivation: TBD \\
+How test will be performed: TBD \\
+    
 \end{enumerate}
 
-\subsubsection{Module ?}
+\subsection{Tests for Nonfunctional Requirements}
+This section will not be completed until after the MIS and MG are finished.
 
-...
+\subsubsection{Module 1}
+The following content will not be completed until after the MIS and MG are finished.		
+\begin{enumerate}
 
-\subsection{Traceability Between Test Cases and Modules}
+\item{test-id1\\}
 
-\wss{Provide evidence that all of the modules have been considered.}
+Type: TBD \\				
+Initial State: TBD	\\			
+Input/Condition: TBD \\				
+Output/Result: TBD	\\			
+How test will be performed: TBD \\
+
+\end{enumerate}
 				
-\bibliographystyle{plainnat}
+\begin{thebibliography}{9} 
+    \bibitem{srs}
+    Yi-Leng Chen. (2024). \textit{Software Requirements Specification for: Concrete Remaining Life Prediction.}    \url{https://github.com/kypss94132/CAS741_YiLeng-Chen/blob/main/docs/SRS/SRS.pdf}
 
-\bibliography{../../refs/References}
+    \bibitem{srstem}
+    Smith, W. Spencer.(2024). \textit{SRS}. GitHub. \url{https://github.com/smiths/capTemplate/blob/main/docs/SRS/SRS.pdf}
+    
+    \bibitem{vnvtem}
+    Smith, W. Spencer.(2023). \textit{VnVPlan}. GitHub. \url{https://github.com/smiths/capTemplate/blob/main/docs/VnVPlan/VnVPlan.pdf}
 
+    \bibitem{srscheck}
+    Smith, W. Spencer.(2024). \textit{SRS-Checklist}. GitHub. \url{https://github.com/kypss94132/CAS741_YiLeng-Chen/blob/main/docs/Checklists/SRS-Checklist.pdf}
+
+    \bibitem{vnvcheck}
+    Smith, W. Spencer.(2022). \textit{VnV-Checklist}. GitHub. \url{https://github.com/kypss94132/CAS741_YiLeng-Chen/blob/main/docs/Checklists/VnV-Checklist.pdf}
+
+    \bibitem{mgcheck}
+    Smith, W. Spencer.(2022). \textit{MG-Checklist}. GitHub. \url{https://github.com/smiths/capTemplate/blob/main/docs/Checklists/MG-Checklist.pdf}
+
+    \bibitem{mischeck}
+    Smith, W. Spencer.(2022). \textit{MIS-Checklist}. GitHub. \url{https://github.com/smiths/capTemplate/blob/main/docs/Checklists/MIS-Checklist.pdf}
+
+    \bibitem{browne}
+    R.D. Browne. \textit{Mechanisms of Corrosion of Steel in Concrete}. in Concrete in Relation to Design, Inspection, and Repair of Offshore and Coastal Structures, ACI SP-65.
+
+    \bibitem{hookham}
+    C.J. Hookham, \textit{Rehabilitation of Great Lakes Steel’s No. One Dock} ACI Symposium of Durability of Concrete, in press.
+
+    \bibitem{andrade}
+    C. Andrade, C. Alonso, and J.A. Gonzalez.(1989). \textit{Approach to the Calculation of the Residual Life in Corroding Concrete Reinforcement based on Corrosion Intensity Values}.9th European Congress on Corrosion: Life Time Expectancy of Materials and Constructions, Vol. 2, Ultrect, Netherlands.
+
+    \bibitem{clifton}
+    J.R. Clifton. (1991) \textit{Predicting the Remaining Service Life of Concrete} NISTIR 4712, National Institute of Standards and Technology.
+    
+\end{thebibliography}
 \newpage
 
 \section{Appendix}
 
-This is where you can place additional information.
-
-\subsection{Symbolic Parameters}
-
-The definition of the test cases will call for SYMBOLIC\_CONSTANTS.
-Their values are defined in this section for easy maintenance.
-
-\subsection{Usability Survey Questions?}
-
-\wss{This is a section that would be appropriate for some projects.}
-
-\newpage{}
-\section*{Appendix --- Reflection}
-
-The information in this section will be used to evaluate the team members on the
-graduate attribute of Lifelong Learning.  Please answer the following questions:
-
-\newpage{}
-\section*{Appendix --- Reflection}
-
-\wss{This section is not required for CAS 741}
-
-The information in this section will be used to evaluate the team members on the
-graduate attribute of Lifelong Learning.  Please answer the following questions:
+\subsection{Usability Survey Questions}
+\label{sec:survey}
+The following questions comprise the survey, which will be conducted through Google Forms. Users can rate their feelings on a scale from 1 to 5, with 1 representing "extremely disagree" and 5 representing "extremely agree".
 
 \begin{enumerate}
-  \item What knowledge and skills will the team collectively need to acquire to
-  successfully complete the verification and validation of your project?
-  Examples of possible knowledge and skills include dynamic testing knowledge,
-  static testing knowledge, specific tool usage etc.  You should look to
-  identify at least one item for each team member.
-  \item For each of the knowledge areas and skills identified in the previous
-  question, what are at least two approaches to acquiring the knowledge or
-  mastering the skill?  Of the identified approaches, which will each team
-  member pursue, and why did they make this choice?
+    \item The interface is easy to understand and operate.
+    \item How satisfied are you with the speed and efficiency of our experts in conducting math calculations?
+    \item The program is equipped with useful tools to aid in research.
+    \item The program provides the results I want to know.
+    \item Does the program meet your expectations in terms of accuracy and reliability?
+    \item How would you rate the overall quality of CRLP?
+    \item Do you have any suggestions or feedback for improving our website or services? (An input section will be provided for this question.)
 \end{enumerate}
 
 \end{document}
