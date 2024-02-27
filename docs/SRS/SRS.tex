@@ -147,6 +147,7 @@
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
 February 5 & 1.0 & Initial Documentation\\
+February 26 & 2.0 & Updates Following Feedback\\
 \bottomrule
 \end{tabularx}
 
@@ -167,12 +168,13 @@ Throughout this document SI (Syst\`{e}me International d'Unit\'{e}s) is employed
     \toprule		
     \textbf{symbol} & \textbf{unit} & \textbf{SI}\\
     \midrule 
-    \si{\metre} & length & metre\\
-    \si{\second} & time & second\\
-    \si{\celsius} & temperature & centigrade\\
     \si{\ampere} & electric current & ampere\\
-    \si{\pascal} & pressure & pascal\\
+    \si{\celsius} & temperature & centigrade\\
+    \si{\metre} & length & metre\\
     \si{\micro} & micro & $10^-6$ \\
+    \si{\pascal} & pressure & pascal\\
+    \si{\second} & time & second\\
+
     \bottomrule
   \end{tabular}
   %	\caption{Provide a caption}
@@ -296,7 +298,7 @@ This section provides general information about the system.  It identifies the i
 The interaction between the product and the user is through a UI. The responsibilities of the user and the system are as follows: 
 
 \begin{itemize}
-\item User Responsibilities: Provide the input data related to climate and concrete deterioration level, ensuring that the entry data is valid.
+\item User Responsibilities: Provide the input data related to climate and concrete deterioration level.
 \end{itemize}
 \begin{itemize}
 \item Prediction Program Responsibilities: Determine if the inputs satisfy the required program constraints and predict the remaining service life of concrete.
@@ -492,7 +494,7 @@ Label & Amount of concrete degradation\\
 \hline
 Symbol & $k_d$, $A_d$, $t_y$, n \\
 \hline
-SI Units & - \\
+SI Units & s \\
 \hline
 Equation & 
 \(k_d = \left(\frac{A_d}{t_y}\right)^n\) \\
@@ -524,7 +526,7 @@ Number& DD\refstepcounter{datadefnum}\thedatadefnum \label{ty}\\
   \hline
 Symbol & $t_y$, $A_\text{df}$, $k_d$ , n \\
 \hline
-SI Units & - \\
+SI Units & s \\
 \hline
 Equation & 
 $t_y$ = \left(\frac{{A_d_f}}{k_d}\right)^{\frac{1}{n}}) \\
