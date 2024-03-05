@@ -34,6 +34,7 @@
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
 February 19 & 1.0 & Initial Documentation\\
+March 4 & 1.1 & Changes based on feedback \\
 
 \bottomrule
 \end{tabularx}
@@ -60,6 +61,7 @@ Table \ref{tab:symbols} lists the symbols, abbreviations, and acronyms used in t
   CRLP & Concrete Remaining Life Prediction program \\
   MIS & Module Interface Specification \\
   MG & Module Guide \\
+  SRS & Software Requirements Specification \\
   VnV & Verification \& Validation \\
   UI & User Interface\\
   \bottomrule
@@ -117,7 +119,8 @@ The following section outlines the testing plan for CRLP. It begins with address
 The SRS document can be verified by following these steps:
 \begin{enumerate}
     \item Documentation: The document should adhere to the SRS template \cite{srstem} and be uploaded to GitHub.
-    \item Review: The author create separate issues for the instructor, domain expert, and secondary reviewer (specifically designated for SRS). And these three individuals are responsible for using SRS checklist \cite{srscheck} to review the SRS document.
+    \item Review: The author create separate issues for the instructor, domain expert, and secondary reviewer (specifically designated for SRS).
+    These three individuals are responsible for reviewing the SRS document using the SRS checklist\cite{srscheck}, one by one.
     \item Modify: Make adjustments to the document based on the feedback received from the reviewers. Then, repeat the aforementioned steps.
     
 \end{enumerate}
@@ -126,7 +129,7 @@ The SRS document can be verified by following these steps:
 The design documents, such as the Module Guide (MG) and the Module Interface Specification (MIS), can be verified by following these steps:
 \begin{enumerate}
     \item Documentation: Unlike previous documents, there are no templates for design documents. The MG should provide a high-level overview of the architecture and structure of the software system, while the MIS should provide interface details about the modules. These documents need to be uploaded to GitHub once they are finished.
-    \item Review: The author create separate issues for the instructor, domain expert, and secondary reviewer (specifically designated for specific review). And these three individuals are responsible for using checklist \cite{mgcheck} \cite{mischeck} to review the documents.
+    \item Review: The author create separate issues for the instructor, domain expert, and secondary reviewer (specifically designated for specific review). These three individuals are responsible for using checklist \cite{mgcheck} \cite{mischeck} to review the documents, one by one.
     \item Modify: Make adjustments to the document based on the feedback received from the reviewers. Then, repeat the aforementioned steps.
 \end{enumerate}
 
@@ -136,7 +139,7 @@ The VnV plan can be verified by following these steps:
 
 \begin{enumerate}
     \item Documentation: There is also no restricted format for the document, but there's a template \cite{vnvtem} that can be referred to, and the document needs to be uploaded to GitHub once it is finished.
-    \item Review: Once the VnV plan is done, the author create separate issues for the instructor, domain expert, and secondary reviewer (specifically designated for VnV). And these three individuals are responsible for using VnV checklist \cite{vnvcheck}to review the document.
+    \item Review: Once the VnV plan is done, the author create separate issues for the instructor, domain expert, and secondary reviewer (specifically designated for VnV). These three individuals are responsible for using VnV checklist \cite{vnvcheck}to review the document, one by one.
     \item Modify: Make adjustments to the document based on the feedback received from the reviewers. Then, repeat the aforementioned steps.
 \end{enumerate}
 
@@ -148,6 +151,7 @@ This project will only conduct dynamic testing. The testing plans for functional
 
 \begin{itemize}
     \item Pytest: The test framework for Python, can execute test cases and provide test results.
+    \item Flake8: A Python linter tool that standardizes the style and quality of Python code.
     \item GitHub Actions: A Continuous Integration (CI) tool which can automate the execution of tests whenever changes are pushed to a repository.
 \end{itemize}
 
@@ -163,59 +167,96 @@ In Section 5.1 of the SRS document \cite{srs}, four functional requirements were
 \subsubsection{Input function test}
 The core of this project involves prediction using various theories, each of which has different equations. The test plans are designed based on these theories.
 
-\begin{itemize}
-    \item Chloride ions exposure: 
-    \label{item:browne}
-    R.D. Browne \cite{browne} forecast the remaining lifespan of reinforced concrete structures in service, which are exposed to chloride ions.
-
-    \item Carbonation model:
-    \label{item:hookham}
-    C.J. Hookham\cite{hookham} forecast the remaining service life using the carbonation model.
-
-    \item Predict with weather data:
-    \label{item:weather}
-     C. Andrade et al \cite{andrade} use humidity data from weather records to predict the remaining service life of concrete.
-
-    \item Predict time to failure:
-    \label{item:failure}
-    J.R. Clifton \cite{clifton} proposed an idea on how to forecast the time for concrete to degrade completely.
-\end{itemize}
-\newpage
 \begin{enumerate}
-    \item test-input-functions \\
-    Control: Automatic	\\				
-    Initial State: Uninitialized\\		
-    Input: Listed in Input column in the table \ref{tab:inputtest}.\\			
-    Output: Listed in Input column in the table \ref{tab:inputtest}.\\
-    Test Case Derivation: This case aims to test the different behaviors when inputting data.\\
-    How test will be performed: This test will be conducted through Pytest and GitHub Actions.\\
+    \item Theory 1: Chloride concentration and depth: 
+    \label{item:browne}
+    R.D. Browne \cite{browne} forecasted the remaining service life by using the chloride concentration and its depth.
+
+    \item Theory 2: Carbonation cover:
+    \label{item:hookham}
+    C.J. Hookham\cite{hookham} forecasted the remaining service life using the time to full cover carbonation.
+    
+    \item Theory 3: Chloride attack:
+    \label{item:hookham}
+    C.J. Hookham\cite{hookham} forecasted the remaining service life using using chloride attack level.
+    
+    \item Theory 4: Weather data:
+    \label{item:weather}
+     C. Andrade et al \cite{andrade} used humidity data from weather records to predict the remaining service life of concrete.
+
+    \item Theory 5: Degradation factors:
+    \label{item:failure}
+    J.R. Clifton \cite{clifton} forecasted the remaining service life using various degradation factors.
+\end{enumerate}
 
 \begin{table}
     \centering
     \begin{adjustbox}{width=\textwidth}
-    \begin{tabularx}{\textwidth}{c|c|c|c} % Use "X" for the last column to allow it to stretch to fill the remaining space
+    \begin{tabularx}{\textwidth}{|X|c|c|c|} % Adjusting for three columns
     \hline
-        Case ID & Input & Output & Theory\\
-    %Input minimum value of data  
+       Parameters & \multicolumn{3}{|c|}{Input} \\
     \hline
-         \stepcounter{rowcount} \therowcount & $t$=1 second& Success & Theory \ref{item:browne}\\
-    %Input minimum value of data     
+        \multicolumn{4}{|c|}{Theory 1}\\
     \hline
+        Constant chloride concentration ($C_0$) & 1000 & None& -1000\\
     \hline
-         \stepcounter{rowcount} \therowcount & $M_1, M_2, M_3=1$ month& Success & Theory \ref{item:weather}\\
+         Chloride ion diffusion coefficient ($D_{cl}$) & 1x10^{-10} & None &1x10^{-10}\\
     \hline
-        \stepcounter{rowcount} \therowcount & Input random valid value of data & Success & All theories\\
+        Chloride depth (x) & 0.01 & None & 0.01\\
     \hline
-        \stepcounter{rowcount} \therowcount & Input nothing for input data & Error & All theories\\
+        Chloride concentration & 899.8 & None & 899.8\\
     \hline
-    \multicolumn{4}{p{\dimexpr\textwidth-2\tabcolsep\relax}}{*Success means CRLP loads the data successfully and moves on to the process step.} \\ 
-    \multicolumn{4}{p{\dimexpr\textwidth-2\tabcolsep\relax}}{*Error means rejecting input and popping error message: Please enter the value!} \\ 
+        Output & Success & Error & Error\\
+    \hline
+        \multicolumn{4}{|c|}{Theory 2} \\
+    \hline
+        Remaining Uncarbonated Cover & 0.95 & None & 0.95\\
+    \hline
+        Chloride concentration & 0.028 & None & -0.028\\
+    \hline
+        Output & Success & Error &Error\\
+    \hline
+        \multicolumn{4}{|c|}{Theory 3} \\
+    \hline
+        Quality coefficient of concrete($K_c$) & 7.59 & None & 7.59\\
+    \hline
+        Coefficient of environment($K_e$) & 0.028 & None&0.028\\
+    \hline
+         Thickness of concrete cover($K_R$) & 0.95 & None &-0.95\\
+    \hline
+         Coefficient of active corrosion($K_a$) & 4 & None &4\\
+    \hline
+        Output & Success & Error &Error \\
+    \hline
+        \multicolumn{4}{|c|}{Theory 4} \\ 
+    \hline
+        Months that relative humidity is below 70\%($M_1$) & 4 & None & 1\\
+     \hline
+        Months that relative humidity is between 70\% and 100\%($M_2$) & 6 & None & 1\\
+    \hline
+        Months that rain occurs($M_3)& 2 & None & 1\\
+    \hline
+        Output & Success & Error & Error\\
+    \hline
+        \multicolumn{4}{|c|}{Theory 5} \\ 
+    \hline
+       Degradation Category & Carbonation & None & Carbonation\\
+    \hline
+       Years of Concrete Usage & 36 & None & -1\\
+    \hline
+        Average Depth of Carbonation& 24 & None & 24\\
+    \hline
+        Amount of damage at failure& 48 & None & 48\\
+    \hline
+        Output & Success & Error & Error \\
+    \hline
+    \multicolumn{4}{p{\dimexpr\textwidth-2\tabcolsep\relax}}{*Success means CRLP output the predict result successfully.} \\
+    \multicolumn{4}{p{\dimexpr\textwidth-2\tabcolsep\relax}}{*Error means rejecting input and popping error message: Please enter the value!} \\
     \end{tabularx}
     \end{adjustbox}
-    \caption{Input data test}
+    \caption{input data test}
     \label{tab:inputtest}
 \end{table}
-\end{enumerate}
 
 \newpage
 \subsubsection{Output function test}
@@ -223,22 +264,20 @@ The core of this project involves prediction using various theories, each of whi
 \begin{table}
     \centering
     \begin{adjustbox}{width=\textwidth}
-    \begin{tabularx}{\textwidth}{c|c|c|c} % Use "X" for the last column to allow it to stretch to fill the remaining space
+    \begin{tabularx}{\textwidth}{|c|c|c|X|} % Corrected to use X for the last column
     \hline
         Case ID & Input & Output & Theory\\
     \hline
         1 & Input random valid value of data & Success & All theories\\
     \hline
-        2& Input nothing for input data & Nothing & All theories\\
+        2 & Input nothing for input data & Nothing & All theories\\
     \hline
-    \multicolumn{4}{p{\dimexpr\textwidth-2\tabcolsep\relax}}{*Success means CRLP output the predict result successfully.} \\ 
+    \multicolumn{4}{p{\dimexpr\textwidth-2\tabcolsep\relax}}{*Success means CRLP output the predict result successfully.} \\
     \end{tabularx}
     \end{adjustbox}
     \caption{Output data test}
     \label{tab:outputtest}
 \end{table}
-
-\begin{enumerate}
 
     \item test-output-functions \\
     Control: Automatic	\\				
@@ -255,7 +294,7 @@ The core of this project involves prediction using various theories, each of whi
 \begin{table}
     \centering
     \begin{adjustbox}{width=\textwidth}
-    \begin{tabularx}{\textwidth}{c|c|c|c} % Use "X" for the last column to allow it to stretch to fill the remaining space
+    \begin{tabularx}{\textwidth}{|c|c|c|c|} % Use "X" for the last column to allow it to stretch to fill the remaining space
     \hline
         Case ID & Input & Output & Theory\\
     \hline
@@ -287,7 +326,7 @@ The core of this project involves prediction using various theories, each of whi
 \begin{table}
     \centering
     \begin{adjustbox}{width=\textwidth}
-    \begin{tabularx}{\textwidth}{c|c|c|c} % Use "X" for the last column to allow it to stretch to fill the remaining space
+    \begin{tabularx}{\textwidth}{|c|c|c|c|} % Use "X" for the last column to allow it to stretch to fill the remaining space
     \hline
         Case ID & Input & Output & Theory\\
     \hline
