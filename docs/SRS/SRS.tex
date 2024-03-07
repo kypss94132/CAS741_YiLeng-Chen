@@ -196,7 +196,6 @@ $A_\text{cr}$ & \si[per-mode=symbol]{{}\micro\ampere\per\centi\meter\squared}& A
 $A_d$ & \si[per-mode=symbol] {\milli\meter} & Accumulated deterioration at time $t_y$ \\
 $A_\text{df}$ & \si[per-mode=symbol] {\milli\meter} & Amount of damage at failure \\
 
-$C(x,t)$ & \% & The chloride concentration at depth x after time t \\
 $C_o$ & \% & Constant chloride concentration at the surface\\
 $C_R$ & cm & Thickness of concrete cover\\
 $C_1$ & - & Coefficient weighing the impact of corrosion rates (Icorr) in $M_1$\\
@@ -328,32 +327,32 @@ A system is required to predict the remaining service life of concrete by integr
 This subsection provides a list of terms that are used in the subsequent sections and their meaning, with the purpose of reducing ambiguity and making it easier to correctly understand the requirements:
 
 \begin{enumerate}
-    \item Corrosion rates (Icorr): The flow of electric charge associated with the corrosion reactions occurring on a metal surface.
+    \item Corrosion rates (Icorr): As states on Corrosionpedia \cite{corrosionpedia} website (2019), “Corrosion rate is the speed at which any metal in a specific environment deteriorates. It also can be defined as the amount of corrosion loss per year in thickness.”
 
     \item Deterioration Factors:
     \begin{itemize}
-        \item Carbonation
+        \item Carbonation: “It reduces its alkalinity sufficiently to depassivate the steel and initiate corrosion. Carbonation involves the reaction of gaseous carbon dioxide with calcium hydroxide of concrete to form calcium carbonate. The steel's pH becomes susceptible to corrosion when fully carbonated.” (J.R. Clifton, 1991, p.19)\cite{concrete_life}
     \end{itemize}
     \begin{itemize}
-        \item Diffusion of chloride ions
+        \item Diffusion of chloride ions: It refers to the process by which chloride ions permeate or spread through concrete structures. Once present in concrete, chloride ions can initiate corrosion of steel reinforcement. The diffusion of chloride ions through concrete is influenced by factors such as the presence of entrained air, the spacing of air bubbles, and the pore structure of the concrete matrix. (J.R. Clifton, 1991, p.6)\cite{concrete_life}
     \end{itemize}
     \begin{itemize}
-        \item Acid attack (siliceous aggregate)
+        \item Acid attack (siliceous aggregate): It occurs as a result of alkali-silica reaction (ASR). ASR is a type of alkali-aggregate reaction where the reactive components, namely silica in the aggregate, interact with alkalis in the cement. This reaction leads to the formation of expansive products, causing serious cracking in concrete due to the imbibition of water by the reaction products. (J.R. Clifton, 1991, p.15)\cite{concrete_life}
     \end{itemize}
     \begin{itemize}
-        \item Acid attack (carbonate aggregate)
+        \item Acid attack (carbonate aggregate): It involves alkali-carbonate reaction (ACR). Similar to alkali-silica reaction, alkali-carbonate reaction occurs between alkalis in the cement and certain carbonate aggregates, such as dolomitic limestone aggregates. This reaction can also lead to the formation of expansive products and subsequent cracking of concrete.(J.R. Clifton, 1991, p.15)\cite{concrete_life}
     \end{itemize}
     \begin{itemize}
-        \item Sulfate attack
+        \item Sulfate attack: As J.R. Clifton (1991) \cite{concrete_life} states, “Sulfate attack of concrete can result in cracking or disintegration of the material. Naturally occurring sulfates of sodium, potassium, calcium, and magnesium are commonly found in groundwater and soil, particularly in areas with high clay content.”(p.25)
     \end{itemize}
     \begin{itemize}
-        \item Frost attack
+        \item Frost attack: This is the damage incurred by concrete when it is exposed to cycles of freezing and thawing. Frost damage can occur even if the concrete is not fully saturated with water, as the critical level of saturation for most concretes is around 85 percent. (J.R. Clifton, 1991, p.18)\cite{concrete_life}
     \end{itemize}
     \begin{itemize}
-        \item Active corrosion of steel
+        \item Active corrosion of steel: It refers to the phase in which corrosion is actively occurring, leading to the deterioration of the reinforcing steel within concrete structures.(J.R. Clifton, 1991, p.40)\cite{concrete_life}
     \end{itemize}
     \begin{itemize}
-        \item Reinforcement (propagation)
+        \item Reinforcement (propagation): It refers to the process of corrosion spreading or advancing within the steel reinforcement embedded in concrete structures. It encompasses the progression of corrosion beyond the initial stage of initiation and extends to the broader understanding of how corrosion develops and spreads over time.(Andrade. C, 2018) \cite{propagation}
     \end{itemize}
 
     \item Rain: Precipitation in the form of liquid water droplets greater than 0.5 mm. 
@@ -565,21 +564,20 @@ identified in Sections~\ref{sec_theoretical} and~\ref{sec_gendef}.
   \hline
   \rowcolor[gray]{0.9}
   Number& IM\refstepcounter{instnum}\theinstnum \\
-  \label{cxy}\\ % Move \label command to a separate line
   \hline
+  \label{cxy}\\ % Move \label command to a separate line
   Label& \bf By using chloride concentration at depth x to derive time t\\
   \hline
-  Input&$C_o$, erf, x, $D_\text{cl}, t$\\
+  Input&$C_o$, x, $D_\text{cl}, t$\\
   \hline
-  Output& C(x,t)\\
+  Output& t\\
   \hline
   Description&
-  $C_o$ is constant chloride concentration at the surface.\\
-  &erf is the error function.\\
-  &x is the depth of chloride concentration.\\
-  &$D_\text{cl}$ is Chloride ion diffusion coefficient.\\
-  &t is the time required to reach a sufficient depth x to obtain complete chloride concentration.\\
-  & The above equation the time t to reach depth x can be used to derive the remaining service life.
+  $C_o$ is constant chloride concentration at the surface.(mg/L)\\
+  &x is the depth of chloride concentration.(m)\\
+  &$D_\text{cl}$ is Chloride ion diffusion coefficient.($m^2/s$)\\
+  &t is the time required to reach a sufficient depth x to obtain complete chloride concentration.(year)\\
+  & The time t to reach depth x can be used to derive the remaining service life.
   \\
   \hline
   Sources& James Clifton et al.~\cite{glassbr_spec} \\
@@ -608,10 +606,9 @@ identified in Sections~\ref{sec_theoretical} and~\ref{sec_gendef}.
   Output & $t_c$\\
   \hline
   Description&
-  $t_c$ is the time to be fully covered by carbonation.\\
-  &L is the the remaining uncarbonated cover.\\
-  &$D_\text{cl}$ is Chloride ion diffusion coefficient.\\
-  &$R_c$ is the rate of carbonation.\\
+  $t_c$ is the time to be fully covered by carbonation.(year)\\
+  &L is the the remaining uncarbonated cover.(cm)\\
+  &$R_c$ is the rate of carbonation.(cm/year)\\
   & The above equation predict remaining service life of carbonation model.
   \\
   \hline
@@ -640,11 +637,11 @@ identified in Sections~\ref{sec_theoretical} and~\ref{sec_gendef}.
   Output & $t_r$\\
   \hline
   Description&
-  $t_r$ is the remaining service life of concrete.\\
-  &$k_c$ is the quality coefficient of concrete.\\
-  &$k_e$ is the coefficient of environment.\\
-  &CR is the thickness of concrete cove.\\
-  &$k_a$ is the coefficient of active corrosion.\\
+  $t_r$ is the remaining service life of concrete.(year)\\
+  &$k_c$ is the quality coefficient of concrete.(unitless)\\
+  &$k_e$ is the coefficient of environment.(unitless)\\
+  &CR is the thickness of concrete cove.(cm)\\
+  &$k_a$ is the coefficient of active corrosion.(unitless)\\
   & The above equation prediction of remaining service life with respect to chloride attack.
   \\
   \hline
@@ -665,17 +662,18 @@ identified in Sections~\ref{sec_theoretical} and~\ref{sec_gendef}.
   \hline
   \rowcolor[gray]{0.9}
   Number & IM\refstepcounter{instnum}\theinstnum \\
+  \hline  
   \label{weather}\\ % Move \label command to a separate line
-  \hline
   Label & \bf Prediction of remaining service life with weather data \\
   \hline
-  Input & $A_\text{cr}$ \\ % Add a closing $ here
+  Input & $A_\text{df}$, $A_\text{d}$ \\ % Add a closing $ here
   \hline
   Output & $t_r$ \\
   \hline
   Description &
-  $t_r$ is the remaining service life of concrete. \\
-  & $A_{\text{cr}}$ is the average corrosion rate of a year. \\
+  $t_r$ is the remaining service life of concrete. (year)\\
+  & $A_{\text{df}}$ is the amount of damage at failure.(mm) \\
+  & $A_{\text{d}}$ is the accumulated deterioration right now.(mm) \\
   & The above equation predicts the remaining service life with weather data. \\
   \hline
   Sources & James Clifton et al.~\cite{glassbr_spec} \\
@@ -704,9 +702,9 @@ identified in Sections~\ref{sec_theoretical} and~\ref{sec_gendef}.
   Output & $t_r$\\
   \hline
   Description&
-  $t_r$ is the remaining service life of concrete.\\
-  &$t_f$ is the average corrosion rate of a year.\\
-  &$t_i$ is the age of the concrete at the time of condition inspection.\\
+  $t_r$ is the remaining service life of concrete.(year)\\
+  &$t_f$ is the average corrosion rate of a year.(year)\\
+  &$t_i$ is the age of the concrete at the time of condition inspection.(year)\\
   & The above equation predict the remaining service life based on the age at failure up to the time of inspection.\\
   \hline
   Sources& James Clifton et al.~\cite{glassbr_spec} \\
@@ -850,13 +848,18 @@ R4 &  &  &  &  &  &  &  &  \\ \hline
     Nikitha Krithnan and W. Spencer Smith. \textit{Software Requirements Specification forGlassBR.}    \url{https://jacquescarette.github.io/Drasil/examples/glassbr/SRS/srs/GlassBR_SRS.html}
     
     \bibitem{historical_data}
-    \textit{Historical Data.} (n.d.). Government of Canada. \url{https://climate.weather.gc.ca/historical_data/search_historic_data_e.html}
+    \textit{Historical Data.}Government of Canada. \url{https://climate.weather.gc.ca/historical_data/search_historic_data_e.html}
     
     \bibitem{concrete_life}
-    Clifton, J. R., \& Pommersheim, J. M. (1992). \textit{Methods for Predicting Remaining Life of Concrete in Structures.}
-    \url{https://nvlpubs.nist.gov/nistpubs/Legacy/IR/nistir4954.pdf}
-\end{thebibliography}
+    Clifton, J. R. and Pommersheim, J. M. (1992). 
+    \textit{Methods for Predicting Remaining Life of Concrete in Structures.}
+    \url{https://nvlpubs.nist.gov/nistpubs/Legacy/IR/nistir4712.pdf}
 
+    \bibitem{corrosionpedia}
+    \textit{Corrosion Rate.}(2018, September 12) Corrosionpedia. \url{https://www.corrosionpedia.com/definition/337/corrosion-rate}
+
+    \bibitem{propagation}
+    Andrade, C.\textit{Propagation of reinforcement corrosion: principles, testing and modelling.}(2018) Corrosionpedia. \url{https://doi.org/10.1617/s11527-018-1301-1}    
 \newpage
 \paragraph{Appendix}
 \begin{table}[htbp]
