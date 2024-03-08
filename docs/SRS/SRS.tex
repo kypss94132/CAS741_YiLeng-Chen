@@ -128,9 +128,9 @@
 
 \begin{document}
 
-\title{Software Requirements Specification for \progname: Concrete Remaining Life Prediction} 
+\title{Software Requirements Specification for CRLP: Concrete Remaining Life Prediction} 
 \author{Yi-Leng Chen}
-\date{February 5, 2024}
+\date{February 26, 2024}
 	
 \maketitle
 %~\newpage
@@ -169,11 +169,14 @@ Throughout this document SI (Syst\`{e}me International d'Unit\'{e}s) is employed
     \textbf{symbol} & \textbf{unit} & \textbf{SI}\\
     \midrule 
     \si{\ampere} & electric current & ampere\\
-    \si{\celsius} & temperature & centigrade\\
+    \si{\centi\meter} & length & centimeter \\
+    \si{\liter} & volume & liter \\
     \si{\metre} & length & metre\\
-    \si{\micro} & micro & $10^-6$ \\
-    \si{\pascal} & pressure & pascal\\
+    \si{\milli\gram} & mass & milligram \\
+    \si{\milli\metre} & length & millimeter\\
     \si{\second} & time & second\\
+    \text{y} & time & year\\
+    
 
     \bottomrule
   \end{tabular}
@@ -183,54 +186,45 @@ Throughout this document SI (Syst\`{e}me International d'Unit\'{e}s) is employed
 \subsection{Table of Symbols}
 
 The table that follows summarizes the symbols used in this document along with
-their units.  The choice of symbols was made to be consistent with the heat
-transfer literature and with existing documentation for solar water heating
-systems.  The symbols are listed in alphabetical order.
+their units. The symbols are listed in alphabetical order.
 
 \renewcommand{\arraystretch}{1.2}
 %\noindent \begin{tabularx}{1.0\textwidth}{l l X}
 \noindent \begin{longtable*}{l l p{12cm}} \toprule
 \textbf{symbol} & \textbf{unit} & \textbf{description}\\
 \midrule 
-$A_\text{cr}$ & \si[per-mode=symbol]{{}\micro\ampere\per\centi\meter\squared}& Average corrosion rate of a year \\
-$A_d$ & \si[per-mode=symbol] {\milli\meter} & Accumulated deterioration at time $t_y$ \\
-$A_\text{df}$ & \si[per-mode=symbol] {\milli\meter} & Amount of damage at failure \\
+$A_\text{cr}$ & \si[per-mode=symbol]{{}\micro\ampere\per\centi\meter\squared}& average corrosion rate during one year\\
+$A_d$ & \si[per-mode=symbol] {\milli\meter} & cumulative depth of deterioration after $t_{use}$ years\\
+$A_\text{df}$ & \si[per-mode=symbol] {\milli\meter} & concrete cover thickness after $t_{use}$ years\\%跟下面要不融合在一起
 
-$C_o$ & \% & Constant chloride concentration at the surface\\
-$C_R$ & cm & Thickness of concrete cover\\
-$C_1$ & - & Coefficient weighing the impact of corrosion rates (Icorr) in $M_1$\\
-$C_2$ & - & Coefficient weighing the impact of corrosion rates (Icorr) in $M_2$\\
-$C_3$ & - & Coefficient weighing the impact of corrosion rates (Icorr) in $M_3$\\
+$C_x$ & \si{\milli\gram}/\si{\liter} & chloride concentration at depth $x$ \\ 
+$C_{const}$ & \si{\milli\gram}/\si{\liter} & constant chloride concentration at the concrete surface\\
+$C_R$ & cm & thickness of concrete cover\\
 
-$D_\text{cl}$ & - & Chloride ion diffusion coefficient\\
-$erf$ & - & error function\\
+$D_\text{cl}$ & $m^2$/s & chloride ion diffusion coefficient\\
+$\math{erf}$ & - & error function\\
 
-$H_r$ & \% & Relative humidity\\
-$I__\text{corr}$ & - & Corrosion Rates (\Icorr)\\
+$H_r$ & \% & relative humidity\\
 
-$k_a$ & - & Coefficient of active corrosion \\
-$k_c$ & - & Quality coefficient of concrete \\
-$k_d$ & \si[per-mode=symbol]{{}\milli\meter\per\text{year}} & Factors influencing deterioration at time $t_y$ \\
-$k_e$ & - & Coefficient of environment \\
+$k_a$ & - & coefficient of active corrosion \\
+$k_c$ & - & quality coefficient of concrete \\
+$k_d$ & \si[per-mode=symbol]{{}\milli\meter\per\text{y}} & constant encapsulates various factors affecting the degradation of concrete \\
+$k_e$ & - & coefficient of environment \\
 
-$L$ & cm & The remaining uncarbonated cover \\
-$M_1$ & \SI{}{\text{month}} & Number of months that relative humidity is below 70\%\\
-$M_2$ & \SI{}{\text{month}} & Number of months that relative humidity is between 70 and 100\% \\
-$M_3$ & \SI{}{\text{month}} & Number of months that rain occurs\\
+$L$ & cm & remaining uncarbonated cover \\
 
-$n$ & year & Time order\\
+$n$ & - & time order\\
 
-$R_c$ & cm/year & rate of carbonation \\
+$R_c$ & cm/y & rate of carbonation \\
 $R_d$ & \si[per-mode=symbol]{{}\meter\per\second} & Rate of concrete degradation \\
 
-$t$ & year & The time required to reach a sufficient depth x to obtain complete chloride concentration\\
-$t_c$ & year & The time to be fully covered by carbonation\\
-$t_i$ & year & Age of the concrete at the time of condition inspection\\
-$t_r$ & year & Remaining service life of concrete\\
-$t_y$ & year & Service life of concrete\\
-$t_f$ & year & Time to failure\\
+$t$ & y & time required to reach a sufficient depth $x$ to obtain complete chloride concentration\\
+$t_{cover}$ & y & time to be fully covered by carbonation\\
+$t_{remain}$ & y & remaining service life of concrete\\
+$t_{use}$ & y & Years of concrete usage\\
+$t_y$ & y & total lifespan of concrete\\
 
-$x$ & m & Depth of chloride concentration \\
+$x$ & m & depth\\
 \\ 
 \bottomrule
 \end{longtable*}
@@ -243,15 +237,14 @@ $x$ & m & Depth of chloride concentration \\
   \textbf{symbol} & \textbf{description}\\
   \midrule 
   A & Assumption\\
-  DD & Data Definition\\
+  CRLP & Concrete remaining life prediction \\
+  DD & Data Definition\\  
   GD & General Definition\\
   GS & Goal Statement\\
-  Icorr & Corrosion rates\\
   IM & Instance Model\\
   LC & Likely Change\\
   PS & Physical System Description\\
   R & Requirement\\
-  RH & Relative humidity \\
   SRS & Software Requirements Specification\\
   TM & Theoretical Model\\
   UI & User Interface \\
@@ -262,23 +255,23 @@ $x$ & m & Depth of chloride concentration \\
 \pagenumbering{arabic}
 
 \section{Introduction}
-In response to the critical need for predicting the remaining life of concrete structures, this project aims to develop a program that implements theories introduced by a United States laboratory in 1992. Their work emphasized the importance of estimating remaining service life to enable property owners to plan for repairs or demolitions proactively. By predicting the remaining service life of concrete structures, it offers a valuable tool for effective maintenance and decision-making. \\
+In response to the critical need for predicting the remaining life of concrete structures, this project aims to develop a program that implements theories introduced by a United States laboratory in 1992. \cite{concrete_life_1992} Their work emphasized the importance of estimating remaining service life to enable property owners to plan for repairs or demolitions proactively. By predicting the remaining service life of concrete structures, it offers a valuable tool for effective maintenance and decision-making. \\
 \\
-The upcoming section will present a roadmap for the Software Requirements Specification (SRS) of the program. This segment elucidates the document's purpose, outlines the scope of the requirements, and describes the characteristics of the target audience for this document.
+The upcoming section will present a roadmap for the Software Requirements Specification (SRS) of CRLP. This segment elucidates the document's purpose, outlines the scope of the requirements, and describes the characteristics of the target audience for this document.
 
 \subsection{Purpose of Document}
 
-The primary aim of this document is to outline the requirements of the Concrete Remaining Life Prediction program. This encompasses background information, goals, assumptions, theoretical models, definitions, and other details related to model derivation. These components collectively enable the audience to gain a clear understanding and verify the purpose and scientific basis of this program.
+The primary aim of this document is to outline the requirements of the CRLP program. This encompasses background information, goals, assumptions, theoretical models, definitions, and other details related to model derivation. These components collectively enable the audience to gain a clear understanding and verify the purpose and scientific basis of this program.
 
 \subsection{Scope of Requirements} 
-This document explores the impact of climate data and the level of concrete deterioration (e.g., carbonation model) on concrete structures, aiming to implement a predictive program.
+The scope of requirements assumes that parameters from different equations will not influence each other. In other words, if an equation only requires two specific parameters, $L$ and $R_{c}$ to calculate time, the result will not be affected by relative humidity from other equations.
 
 \subsection{Characteristics of Intended Reader} \label{sec_IntendedReader}
-The intended reviewers of this documentation should possess an understanding of meteorology or civil engineering. Additionally, a basic grasp of high-school level mathematics and chemistry is recommended. For users of the prediction program can have a lower level of expertise, as further explained in the ``User Characteristics'' section (Section~\ref{SecUserCharacteristics}).
+The intended reviewers of this documentation should possess a background in meteorology or have completed university-level courses related to concrete construction or materials introduction. Additionally, a basic grasp of high-school level mathematics and chemistry is recommended. For users of the prediction program can have a lower level of expertise, as further explained in the ``User Characteristics'' section (Section~\ref{SecUserCharacteristics}).
 
 \subsection{Organization of Document}
 
-The organization of this document follows the SRS template provided by Dr. Smith and the GlassBR SRS document\cite{glassbr_spec}.
+The organization of this document follows the SRS template \cite{srstem} provided by Dr. Smith and the GlassBR SRS document \cite{glassbr_spec}.
 
 \section{General System Description}
 
@@ -300,13 +293,15 @@ The interaction between the product and the user is through a UI. The responsibi
 \item User Responsibilities: Provide the input data related to climate and concrete deterioration level.
 \end{itemize}
 \begin{itemize}
-\item Prediction Program Responsibilities: Determine if the inputs satisfy the required program constraints and predict the remaining service life of concrete.
+\item Prediction Program Responsibilities: \\
+    - Determine if the inputs satisfy the required program constraints.\\
+    - Predict the remaining service life of concrete. \\
 \end{itemize}
 
 \subsection{User Characteristics} \label{SecUserCharacteristics}
 \begin{itemize}
-\item The end user is expected to possess basic computer literacy for effectively handling the software.
-\item The end user is expected to have an understanding of the theory behind concrete degradation measurement and its root causes.
+\item The end user is expected to have a fundamental level of computer literacy in order to effectively navigate the software interface and input concrete details accurately. This includes basic skills such as opening the software application and correctly entering concrete parameters into the system.
+\item The end user is expected to have completed university-level civil engineering courses related to concrete introduction or concrete construction. This background knowledge is necessary to comprehend the theoretical aspects of concrete degradation measurement and its underlying causes.
 \end{itemize}
 
 \subsection{System Constraints}
@@ -331,25 +326,25 @@ This subsection provides a list of terms that are used in the subsequent section
 
     \item Deterioration Factors:
     \begin{itemize}
-        \item Carbonation: “It reduces its alkalinity sufficiently to depassivate the steel and initiate corrosion. Carbonation involves the reaction of gaseous carbon dioxide with calcium hydroxide of concrete to form calcium carbonate. The steel's pH becomes susceptible to corrosion when fully carbonated.” (J.R. Clifton, 1991, p.19)\cite{concrete_life}
+        \item Carbonation: “It reduces its alkalinity sufficiently to depassivate the steel and initiate corrosion. Carbonation involves the reaction of gaseous carbon dioxide with calcium hydroxide of concrete to form calcium carbonate. The steel's pH becomes susceptible to corrosion when fully carbonated.” (J.R. Clifton, 1991, p.19)\cite{concrete_life_1991}
     \end{itemize}
     \begin{itemize}
-        \item Diffusion of chloride ions: It refers to the process by which chloride ions permeate or spread through concrete structures. Once present in concrete, chloride ions can initiate corrosion of steel reinforcement. The diffusion of chloride ions through concrete is influenced by factors such as the presence of entrained air, the spacing of air bubbles, and the pore structure of the concrete matrix. (J.R. Clifton, 1991, p.6)\cite{concrete_life}
+        \item Diffusion of chloride ions: It refers to the process by which chloride ions permeate or spread through concrete structures. Once present in concrete, chloride ions can initiate corrosion of steel reinforcement. The diffusion of chloride ions through concrete is influenced by factors such as the presence of entrained air, the spacing of air bubbles, and the pore structure of the concrete matrix. (J.R. Clifton, 1991, p.6)\cite{concrete_life_1991}
     \end{itemize}
     \begin{itemize}
-        \item Acid attack (siliceous aggregate): It occurs as a result of alkali-silica reaction (ASR). ASR is a type of alkali-aggregate reaction where the reactive components, namely silica in the aggregate, interact with alkalis in the cement. This reaction leads to the formation of expansive products, causing serious cracking in concrete due to the imbibition of water by the reaction products. (J.R. Clifton, 1991, p.15)\cite{concrete_life}
+        \item Acid attack (siliceous aggregate): It occurs as a result of alkali-silica reaction (ASR). ASR is a type of alkali-aggregate reaction where the reactive components, namely silica in the aggregate, interact with alkalis in the cement. This reaction leads to the formation of expansive products, causing serious cracking in concrete due to the imbibition of water by the reaction products. (J.R. Clifton, 1991, p.15)\cite{concrete_life_1991}
     \end{itemize}
     \begin{itemize}
-        \item Acid attack (carbonate aggregate): It involves alkali-carbonate reaction (ACR). Similar to alkali-silica reaction, alkali-carbonate reaction occurs between alkalis in the cement and certain carbonate aggregates, such as dolomitic limestone aggregates. This reaction can also lead to the formation of expansive products and subsequent cracking of concrete.(J.R. Clifton, 1991, p.15)\cite{concrete_life}
+        \item Acid attack (carbonate aggregate): It involves alkali-carbonate reaction (ACR). Similar to alkali-silica reaction, alkali-carbonate reaction occurs between alkalis in the cement and certain carbonate aggregates, such as dolomitic limestone aggregates. This reaction can also lead to the formation of expansive products and subsequent cracking of concrete.(J.R. Clifton, 1991, p.15)\cite{concrete_life_1991}
     \end{itemize}
     \begin{itemize}
-        \item Sulfate attack: As J.R. Clifton (1991) \cite{concrete_life} states, “Sulfate attack of concrete can result in cracking or disintegration of the material. Naturally occurring sulfates of sodium, potassium, calcium, and magnesium are commonly found in groundwater and soil, particularly in areas with high clay content.”(p.25)
+        \item Sulfate attack: As J.R. Clifton (1991) \cite{concrete_life_1991} states, “Sulfate attack of concrete can result in cracking or disintegration of the material. Naturally occurring sulfates of sodium, potassium, calcium, and magnesium are commonly found in groundwater and soil, particularly in areas with high clay content.”(p.25)
     \end{itemize}
     \begin{itemize}
-        \item Frost attack: This is the damage incurred by concrete when it is exposed to cycles of freezing and thawing. Frost damage can occur even if the concrete is not fully saturated with water, as the critical level of saturation for most concretes is around 85 percent. (J.R. Clifton, 1991, p.18)\cite{concrete_life}
+        \item Frost attack: This is the damage incurred by concrete when it is exposed to cycles of freezing and thawing. Frost damage can occur even if the concrete is not fully saturated with water, as the critical level of saturation for most concretes is around 85 percent. (J.R. Clifton, 1991, p.18)\cite{concrete_life_1991}
     \end{itemize}
     \begin{itemize}
-        \item Active corrosion of steel: It refers to the phase in which corrosion is actively occurring, leading to the deterioration of the reinforcing steel within concrete structures.(J.R. Clifton, 1991, p.40)\cite{concrete_life}
+        \item Active corrosion of steel: It refers to the phase in which corrosion is actively occurring, leading to the deterioration of the reinforcing steel within concrete structures.(J.R. Clifton, 1991, p.40)\cite{concrete_life_1991}
     \end{itemize}
     \begin{itemize}
         \item Reinforcement (propagation): It refers to the process of corrosion spreading or advancing within the steel reinforcement embedded in concrete structures. It encompasses the progression of corrosion beyond the initial stage of initiation and extends to the broader understanding of how corrosion develops and spreads over time.(Andrade. C, 2018) \cite{propagation}
@@ -846,14 +841,20 @@ R4 &  &  &  &  &  &  &  &  \\ \hline
 \begin{thebibliography}{9} 
     \bibitem{glassbr_spec}
     Nikitha Krithnan and W. Spencer Smith. \textit{Software Requirements Specification forGlassBR.}    \url{https://jacquescarette.github.io/Drasil/examples/glassbr/SRS/srs/GlassBR_SRS.html}
+
+    \bibitem{srstem}
+    Smith, W. Spencer.(2024). \textit{SRS}. GitHub. \url{https://github.com/smiths/capTemplate/blob/main/docs/SRS/SRS.pdf}
     
     \bibitem{historical_data}
     \textit{Historical Data.}Government of Canada. \url{https://climate.weather.gc.ca/historical_data/search_historic_data_e.html}
     
-    \bibitem{concrete_life}
-    Clifton, J. R. and Pommersheim, J. M. (1992). 
+    \bibitem{concrete_life_1991}
+    Clifton, J. R.(1991). 
     \textit{Methods for Predicting Remaining Life of Concrete in Structures.}
-    \url{https://nvlpubs.nist.gov/nistpubs/Legacy/IR/nistir4712.pdf}
+    
+    \bibitem{concrete_life_1992}
+    Clifton, J. R. and Pommersheim, J. M. (1992). 
+    \textit{Methods for Predicting Remaining Life of Concrete in Structures.}   \url{https://nvlpubs.nist.gov/nistpubs/Legacy/IR/nistir4954.pdf}
 
     \bibitem{corrosionpedia}
     \textit{Corrosion Rate.}(2018, September 12) Corrosionpedia. \url{https://www.corrosionpedia.com/definition/337/corrosion-rate}
