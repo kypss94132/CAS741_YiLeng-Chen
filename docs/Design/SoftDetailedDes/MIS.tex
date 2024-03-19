@@ -189,7 +189,6 @@ main():
     - The Input Format Module (M3) converts the input data into the data structure.\\
     - Once the verified data is obtained, the Prediction Calculate Equations Module (M6) begins the calculation process.\\
     - The result is then returned by the Output Format Module (M4).\\
-
 \item output: None
 \item exception: The exceptions are listed in corresponding submodules.
 
@@ -197,64 +196,6 @@ main():
 \subsubsection{Local Functions}
 None
 \newpage
-%----------------------------------------------------%
-\section{MIS of Input Format Module}
-The module converts the input data into the data structure utilized by the input parameters module.
-
-\subsection{Module}
-format\_input
-
-\subsection{Uses}
-\begin{itemize}
-    \item Input Parameters Module
-\end{itemize}
-
-\subsection{Syntax}
-
-\subsubsection{Exported Constants}
-
-\subsubsection{Exported Access Programs}
-
-\begin{center}
-\begin{tabular}{p{5cm} p{2cm} p{2cm} p{5cm}}
-\hline
-\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-\hline
-input\_SourceVerify & - & boolean & input\_DataSourceError\\
-input\_Verify & String, $\mathbb{R}$ & $\mathbb{R}$ & input\_FormatError\\
-\hline
-\end{tabular}
-\end{center}
-
-\subsection{Semantics}
-
-\subsubsection{State Variables}
-
-IsSourceExist: Boolean \# Ensure that the necessary columns of data exist on the \href{https://climate.weather.gc.ca/historical_data/search_historic_data_e.html} {Government of Canada} website.
-
-\subsubsection{Environment Variables}
-
-Data source: When conducting the prediction process using weather data, the script retrieves data from the \href{https://climate.weather.gc.ca/historical_data/search_historic_data_e.html} {Government of Canada} website.
-
-\subsubsection{Assumptions}
-
-None
-
-\subsubsection{Access Routine Semantics}
-
-input\_Verify():
-\begin{itemize}
-\item transition: The following steps are used to load, verify, and store the input data:
-- 
-
-\item output: None
-\item exception: The exceptions are listed in corresponding submodules.
-
-\end{itemize}
-\subsubsection{Local Functions}
-None
-\newpage
-
 %----------------------------------------------------%
 \section{MIS of Input Parameters Module}
 The module stores the parameters necessary for CRLP, including concrete properties and weather conditions.
@@ -337,11 +278,193 @@ parameters():
 None
 \newpage
 
+%----------------------------------------------------%
+\section{MIS of Input Format Module}
+The module converts the input data into the data structure utilized by the input parameters module.
+
+\subsection{Module}
+input\_format
+
+\subsection{Uses}
+\begin{itemize}
+    \item Input Parameters Module
+\end{itemize}
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabular}{p{2cm} p{2cm} p{2cm} p{5cm}}
+\hline
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\hline
+load\_params & String, $\mathbb{R}$ & $\mathbb{R}$ & input\_Error,input\_SourceError\\
+verify\_params & String, $\mathbb{R}$ & - & badYear,badMonth,badValue\\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+IsSourceExist: Boolean \# Ensure that the necessary columns of data exist on the \href{https://climate.weather.gc.ca/historical_data/search_historic_data_e.html} {Government of Canada} website.
+
+\subsubsection{Environment Variables}
+
+Data source: When conducting the prediction process using weather data, the script retrieves data from the \href{https://climate.weather.gc.ca/historical_data/search_historic_data_e.html} {Government of Canada} website.
+
+\subsubsection{Assumptions}
+
+None
+
+\subsubsection{Access Routine Semantics}
+
+verify\_params():
+\begin{itemize}
+\item transition: The following steps are used to load, verify, and store the input data:\\
+    - Verification of the format of the source website is necessary only for weather data prediction.\\
+    -Extract the input columns from the website one by one.\\
+    -Verify all inputs, specifically ensuring there are no missing columns.\\
+    -Store the inputs in the data structure.\\
+\item output: \textit{out}:= None
+\item exception: exc:=
+\begin{flalign*}
+&A_{d} < 0 \ \lor A_{df} < 0  &&\Longrightarrow \text{badYear} &\\
+&M_{70} \land M_{100} \land M_{rain} \neq 12 &&\Longrightarrow \text{badMonth} &\\
+&M_{70} < 0 \lor  M_{100} < 0 \lor M_{rain} < 0 &&\Longrightarrow \text{badMonth} &\\
+&\nexists H_{r} \text{ (relative humidity)} &&\Longrightarrow \text{input\_SourceError} &
+\end{flalign*}
+\end{itemize}
+\newpage
+
+%----------------------------------------------------%
+\section{MIS of Output Format Module}
+
+\subsection{Module}
+output\_verify
+
+\subsection{Uses}
+\begin{itemize}
+    \item Hardware Hiding Modules
+\end{itemize}
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabular}{p{2cm} p{2cm} p{2cm} p{5cm}}
+\hline
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\hline
+output & String, $\mathbb{R}$ & String & input\_Error,input\_SourceError\\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+None
+\subsubsection{Environment Variables}
+
+Screen: The calculation result will be displayed on the computer screen.
+
+\subsubsection{Assumptions}
+
+None
+
+\subsubsection{Access Routine Semantics}
+
+output():
+\begin{itemize}
+\item transition: This module will output the result to the user's device.
+\item output: \textit{out}:= String
+\item exception: exc:= None
+\end{itemize}
+\newpage
+
+%----------------------------------------------------%
+\section{MIS of Prediction Calculate Equations Module}
+
+\subsection{Module}
+calculation
+
+\subsection{Uses}
+\begin{itemize}
+    \item Input Parameters Module
+\end{itemize}
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabular}{p{2cm} p{10cm} p{2cm} p{5cm}}
+\hline
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\hline
+    calculate & 
+    $C_{const}$: $\mathbb{N}$, 
+    $C_x$: $\mathbb{R}$, 
+    $D_\text{cl}$: $\mathbb{R}$,
+    $x$: $\mathbb{R}$,
+    $L$: $\mathbb{R}$, 
+    $R_c$: $\mathbb{R}$,
+    $k_a$: $\mathbb{R}$, 
+    $k_c$: $\mathbb{R}$, 
+    $k_e$: $\mathbb{R}$,
+    $C_R$: $\mathbb{R}$,
+    $M_{70}$: $\mathbb{Z}$,
+    $M_{100}$: $\mathbb{Z}$,
+    $M_{rain}$: $\mathbb{Z}$,
+    $A_d$: $\mathbb{N}$,
+    $A_\text{df}$: $\mathbb{N}$,
+    $k_d$: $\mathbb{N}$,
+    $n$: $\mathbb{R}$ 
+    & String 
+    & MissingDataError\\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+None
+
+\subsubsection{Environment Variables}
+
+None
+
+\subsubsection{Assumptions}
+
+None
+
+\subsubsection{Access Routine Semantics}
+
+calculate(params):
+\begin{itemize}
+\item transition: After formatting the input data, this module will perform the calculation process.
+\item output: The remaining service life of specific concrete structure.\\
+\textit{out}:= $t_{remain}$ (remaining service life of concrete)
+\item exception: exc:= missing any input parameters $\Longrightarrow$ MissingDataError
+\end{itemize}
+\newpage
+%----------------------------------------------------%
 \bibliographystyle {plainnat}
 \bibliography {MIS.bib}
 
 \newpage
-
-\section{Appendix} \label{Appendix}
 
 \end{document}
