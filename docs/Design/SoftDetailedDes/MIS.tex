@@ -33,16 +33,16 @@ urlcolor=cyan          % color of external links
 
 \externaldocument{../../SRS/SRS}
 
-\input{../../Comments}
-\input{../../Common}
+%\input{../../Comments}
+%\input{../../Common}
 
 \begin{document}
 
-\title{Module Interface Specification for \progname{}}
+\title{Module Interface Specification for CRLP (Concrete Remaining Life Perdiction)}
 
-\author{\authname}
+\author{Yi-Leng Chen}
 
-\date{\today}
+\date{March 18, 2024}
 
 \maketitle
 
@@ -53,8 +53,7 @@ urlcolor=cyan          % color of external links
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-Date 1 & 1.0 & Notes\\
-Date 2 & 1.1 & Notes\\
+March 18 & 1.0 & Initial Documentation\\
 \bottomrule
 \end{tabularx}
 
@@ -62,9 +61,7 @@ Date 2 & 1.1 & Notes\\
 
 \section{Symbols, Abbreviations and Acronyms}
 
-See SRS Documentation at \wss{give url}
-
-\wss{Also add any additional symbols, abbreviations or acronyms}
+See SRS Documentation at \href{https://github.com/kypss94132/CAS741_YiLeng-Chen/blob/main/docs/SRS/SRS.pdf}{GitHub}
 
 \newpage
 
@@ -76,26 +73,15 @@ See SRS Documentation at \wss{give url}
 
 \section{Introduction}
 
-The following document details the Module Interface Specifications for
-\wss{Fill in your project name and description}
+The following document details the Module Interface Specifications for CRLP (Concrete Remaining Life Perdiction)
 
-Complementary documents include the System Requirement Specifications
-and Module Guide.  The full documentation and implementation can be
-found at \url{...}.  \wss{provide the url for your repo}
+Complementary documents include the \href{https://github.com/kypss94132/CAS741_YiLeng-Chen/blob/main/docs/SRS/SRS.pdf}{System Requirement Specifications} and \href{https://github.com/kypss94132/CAS741_YiLeng-Chen/blob/main/docs/Design/SoftArchitecture/MG.pdf}{Module Guide }. The full documentation and implementation can be found at \href{https://github.com/kypss94132/CAS741_YiLeng-Chen/tree/main/docs}{GitHub repository}
 
 \section{Notation}
 
-\wss{You should describe your notation.  You can use what is below as
-  a starting point.}
+The structure of the MIS for modules comes from \citet{HoffmanAndStrooper1995}, with the addition that template modules have been adapted from \cite{GhezziEtAl2003}. The mathematical notation comes from Chapter 3 of \citet{HoffmanAndStrooper1995}. For instance, the symbol := is used for a multiple assignment statement and conditional rules follow the form $(c_1 \Rightarrow r_1 | c_2 \Rightarrow r_2 | ... | c_n \Rightarrow r_n )$.
 
-The structure of the MIS for modules comes from \citet{HoffmanAndStrooper1995},
-with the addition that template modules have been adapted from
-\cite{GhezziEtAl2003}.  The mathematical notation comes from Chapter 3 of
-\citet{HoffmanAndStrooper1995}.  For instance, the symbol := is used for a
-multiple assignment statement and conditional rules follow the form $(c_1
-\Rightarrow r_1 | c_2 \Rightarrow r_2 | ... | c_n \Rightarrow r_n )$.
-
-The following table summarizes the primitive data types used by \progname. 
+The following table summarizes the primitive data types used by CRLP.
 
 \begin{center}
 \renewcommand{\arraystretch}{1.2}
@@ -113,12 +99,9 @@ real & $\mathbb{R}$ & any number in (-$\infty$, $\infty$)\\
 \end{center}
 
 \noindent
-The specification of \progname \ uses some derived data types: sequences, strings, and
-tuples. Sequences are lists filled with elements of the same data type. Strings
-are sequences of characters. Tuples contain a list of values, potentially of
-different types. In addition, \progname \ uses functions, which
-are defined by the data types of their inputs and outputs. Local functions are
-described by giving their type signature followed by their specification.
+The specification of CRLP uses some derived data types: sequences, strings, and tuples. Sequences are lists filled with elements of the same data type. Strings are sequences of characters. Tuples contain a list of values, potentially of
+different types. In addition, CRLP uses functions, which
+are defined by the data types of their inputs and outputs. Local functions are described by giving their type signature followed by their specification.
 
 \section{Module Decomposition}
 
@@ -131,21 +114,19 @@ The following table is taken directly from the Module Guide document for this pr
 \textbf{Level 1} & \textbf{Level 2}\\
 \midrule
 
-{Hardware-Hiding} & ~ \\
+{Hardware-Hiding Module} & ~ \\
 \midrule
 
-\multirow{7}{0.3\textwidth}{Behaviour-Hiding} & Input Parameters\\
-& Output Format\\
-& Output Verification\\
-& Temperature ODEs\\
-& Energy Equations\\ 
+\multirow{5}{0.3\textwidth}{Behaviour-Hiding Module} 
+& Input Parameters Module\\
+& Input Format Module\\
+& Output Format Module\\
 & Control Module\\
-& Specification Parameters Module\\
+& Prediction Calculate Equations Module\\
 \midrule
 
-\multirow{3}{0.3\textwidth}{Software Decision} & {Sequence Data Structure}\\
-& ODE Solver\\
-& Plotting\\
+\multirow{1}{0.3\textwidth}{Software Decision Module} 
+& Sequence Data Structure Module\\
 \bottomrule
 
 \end{tabular}
@@ -155,20 +136,19 @@ The following table is taken directly from the Module Guide document for this pr
 
 \newpage
 ~\newpage
-
-\section{MIS of \wss{Module Name}} \label{Module} \wss{Use labels for
-  cross-referencing}
-
-\wss{You can reference SRS labels, such as R\ref{R_Inputs}.}
-
-\wss{It is also possible to use \LaTeX for hypperlinks to external documents.}
+\section{MIS of Control Module}
+The module provides the main program and GUI to call other modules.
 
 \subsection{Module}
-
-\wss{Short name for the module}
+main
 
 \subsection{Uses}
-
+\begin{itemize}
+    \item Input Parameters Module
+    \item Input Format Module
+    \item Output Format Module
+    \item Prediction Calculate Equations Module
+\end{itemize}
 
 \subsection{Syntax}
 
@@ -181,7 +161,7 @@ The following table is taken directly from the Module Guide document for this pr
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-\wss{accessProg} & - & - & - \\
+main & - & - & - \\
 \hline
 \end{tabular}
 \end{center}
@@ -190,67 +170,178 @@ The following table is taken directly from the Module Guide document for this pr
 
 \subsubsection{State Variables}
 
-\wss{Not all modules will have state variables.  State variables give the module
-  a memory.}
+None
 
 \subsubsection{Environment Variables}
 
-\wss{This section is not necessary for all modules.  Its purpose is to capture
-  when the module has external interaction with the environment, such as for a
-  device driver, screen interface, keyboard, file, etc.}
+None
 
 \subsubsection{Assumptions}
 
-\wss{Try to minimize assumptions and anticipate programmer errors via
-  exceptions, but for practical purposes assumptions are sometimes appropriate.}
+None
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \wss{accessProg}():
+main():
 \begin{itemize}
-\item transition: \wss{if appropriate} 
-\item output: \wss{if appropriate} 
-\item exception: \wss{if appropriate} 
+\item transition: Interact with the GUI and control other modules by following these steps:
+    - The necessary data is input by conducting the Input Parameters Module (M2).\\
+    - The Input Format Module (M3) converts the input data into the data structure.\\
+    - Once the verified data is obtained, the Prediction Calculate Equations Module (M6) begins the calculation process.\\
+    - The result is then returned by the Output Format Module (M4).\\
+
+\item output: None
+\item exception: The exceptions are listed in corresponding submodules.
+
+\end{itemize}
+\subsubsection{Local Functions}
+None
+\newpage
+%----------------------------------------------------%
+\section{MIS of Input Format Module}
+The module converts the input data into the data structure utilized by the input parameters module.
+
+\subsection{Module}
+format\_input
+
+\subsection{Uses}
+\begin{itemize}
+    \item Input Parameters Module
 \end{itemize}
 
-\wss{A module without environment variables or state variables is unlikely to
-  have a state transition.  In this case a state transition can only occur if
-  the module is changing the state of another module.}
+\subsection{Syntax}
 
-\wss{Modules rarely have both a transition and an output.  In most cases you
-  will have one or the other.}
+\subsubsection{Exported Constants}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabular}{p{5cm} p{2cm} p{2cm} p{5cm}}
+\hline
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\hline
+input\_SourceVerify & - & boolean & input\_DataSourceError\\
+input\_Verify & String, $\mathbb{R}$ & $\mathbb{R}$ & input\_FormatError\\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+IsSourceExist: Boolean \# Ensure that the necessary columns of data exist on the \href{https://climate.weather.gc.ca/historical_data/search_historic_data_e.html} {Government of Canada} website.
+
+\subsubsection{Environment Variables}
+
+Data source: When conducting the prediction process using weather data, the script retrieves data from the \href{https://climate.weather.gc.ca/historical_data/search_historic_data_e.html} {Government of Canada} website.
+
+\subsubsection{Assumptions}
+
+None
+
+\subsubsection{Access Routine Semantics}
+
+input\_Verify():
+\begin{itemize}
+\item transition: The following steps are used to load, verify, and store the input data:
+- 
+
+\item output: None
+\item exception: The exceptions are listed in corresponding submodules.
+
+\end{itemize}
+\subsubsection{Local Functions}
+None
+\newpage
+
+%----------------------------------------------------%
+\section{MIS of Input Parameters Module}
+The module stores the parameters necessary for CRLP, including concrete properties and weather conditions.
+
+\subsection{Module}
+parameters
+
+\subsection{Uses}
+\begin{itemize}
+    \item Hardware-Hiding Module
+\end{itemize}
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+None
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
+\hline
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\hline
+parameters & - & - & - \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Semantics}
+The parameters data structure is utilized to store the input data passed by the Input Format Module.
+\subsubsection{State Variables}
+The following theories are retrieved from section 4.1.1 of the VnVPlan document \cite{VNV2024}, which aims to identify the symbols used in each equation.
+
+\begin{enumerate}
+    \item Theory 1 \\
+    $C_{const}$ (constant chloride concentration at the concrete surface): $\mathbb{N}$ \\
+    $C_x$ (chloride concentration at depth $x$): $\mathbb{R}$ \\
+    $D_\text{cl}$ (chloride ion diffusion coefficient): $\mathbb{R}$\\
+    $x$ (depth): $\mathbb{R}$\\
+    
+    \item Theory 2 \\
+    $L$ (remaining uncarbonated cover): $\mathbb{R}$ \\
+    $R_c$ (rate of carbonation): $\mathbb{R}$ \\
+    
+    \item Theory 3 \\
+    $k_a$ (coefficient of active corrosion): $\mathbb{R}$ \\
+    $k_c$ (quality coefficient of concrete): $\mathbb{R}$ \\
+    $k_e$ (coefficient of environment): $\mathbb{R}$\\
+    $C_R$ (thickness of concrete cover): $\mathbb{R}$\\
+    
+    \item Theory 4 \\
+    $M_{70}$ (months that relative humidity below 70\%): $\mathbb{Z}$\\
+    $M_{100}$ (months that relative humidity between 70\% and 100 \%): $\mathbb{Z}$\\
+    $M_{rain}$ (months that rain occurs): $\mathbb{Z}$\\
+
+    \item Theory 5 \\
+    $A_d$ (cumulative depth of deterioration after $t_{use}$ years): $\mathbb{N}$\\
+    $A_\text{df}$ (concrete cover thickness after $t_{use}$ years): $\mathbb{N}$\\
+    $k_d$ (constant encapsulates various factors affecting the degradation of concrete): $\mathbb{N}$\\
+    $n$ (time order): $\mathbb{R}$\\
+\end{enumerate}
+
+\subsubsection{Environment Variables}
+Keyboard: The hardware component used for input. This module assumes the presence of a keyboard for data entry.
+
+\subsubsection{Assumptions}
+
+None
+
+\subsubsection{Access Routine Semantics}
+
+parameters():
+\begin{itemize}
+\item transition: This module contains a data structure for storing the input values formatted by the Input Format Module.
+\item output: None
+\item exception: None
+\end{itemize}
 
 \subsubsection{Local Functions}
-
-\wss{As appropriate} \wss{These functions are for the purpose of specification.
-  They are not necessarily something that is going to be implemented
-  explicitly.  Even if they are implemented, they are not exported; they only
-  have local scope.}
-
+None
 \newpage
 
 \bibliographystyle {plainnat}
-\bibliography {../../../refs/References}
+\bibliography {MIS.bib}
 
 \newpage
 
 \section{Appendix} \label{Appendix}
-
-\wss{Extra information if required}
-
-\section{Reflection}
-
-The information in this section will be used to evaluate the team members on the
-graduate attribute of Problem Analysis and Design.  Please answer the following questions:
-
-\begin{enumerate}
-  \item What are the limitations of your solution?  Put another way, given
-  unlimited resources, what could you do to make the project better? (LO\_ProbSolutions)
-  \item Give a brief overview of other design solutions you considered.  What
-  are the benefits and tradeoffs of those other designs compared with the chosen
-  design?  From all the potential options, why did you select the documented design?
-  (LO\_Explores)
-\end{enumerate}
-
 
 \end{document}
