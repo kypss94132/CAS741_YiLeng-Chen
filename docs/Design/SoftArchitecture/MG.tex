@@ -295,14 +295,14 @@ requirements and between the modules and the anticipated changes.
 % like fref
 \begin{table}[H]
 \centering
-\begin{tabular}{p{0.2\textwidth} p{0.6\textwidth}}
+\begin{tabular}{p{0.1\textwidth} p{0.8\textwidth} p{0.5\textwidth}}
 \toprule
-\textbf{Req.} & \textbf{Modules}\\
+\textbf{Req.} & \textbf{Description} & \textbf{Modules}\\
 \midrule
-R1 & \mref{mIP}, \mref{mIF}, \mref{mDS}\\
-R2 & \mref{mOF}, \mref{mDS}\\
-R3 & \mref{mC}, \mref{mPCE}, \mref{mDS}\\
-R4 & \mref{mOF}, \mref{mC}\\
+R1 & Input the weather data and concrete degradation data. & \mref{mIP}, \mref{mIF}, \mref{mDS}\\
+R2 & Output the prediction result. &\mref{mOF}, \mref{mDS}\\
+R3 & Utilize the input from the previous step to calculate the average corrosion rate and time to failure for the concrete. &\mref{mC}, \mref{mPCE}, \mref{mDS}\\
+R4 & Verify that the output result is generated from the input data. &\mref{mOF}, \mref{mC}\\
 
 \bottomrule
 \end{tabular}
